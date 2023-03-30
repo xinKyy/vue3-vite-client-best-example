@@ -766,11 +766,7 @@ export default {
       let fromAddress = await web3.eth.getAccounts();
       console.log(fromAddress);
       myContract.methods
-        .transferFrom(
-          "0x7B6191C29ad7e732a36806D33FF28803091C056b",
-          this.input2,
-          this.input3
-        )
+        .transferFrom(fromAddress[0], this.input2, this.input3)
         .send({ from: fromAddress[0] })
         .then((r) => {
           this.transactionArr.push(r);

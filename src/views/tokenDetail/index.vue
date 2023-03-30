@@ -889,9 +889,10 @@ export default {
       const contractAbi = this.tokenAbi;
       const contractAddress = "0xF75fBB9273D50cc14a0DB178bf4b823f02c9F5e5"; //查询用户地址
       const myContract = new web3.eth.Contract(contractAbi, contractAddress); //所有代币的abi可以通用（abi,合约地址）
+      let fromAddress = await web3.eth.getAccounts();
       myContract.methods
         .transfer(this.input2, this.input3)
-        .send({ from: "0x7B6191C29ad7e732a36806D33FF28803091C056b" })
+        .send({ from: fromAddress[0] })
         .then(function (r) {
           console.log("use the contract to send coin:");
           console.log(r);

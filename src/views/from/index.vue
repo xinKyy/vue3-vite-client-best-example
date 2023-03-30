@@ -154,8 +154,8 @@ const activeName = ref("first");
 const formInline = reactive({
   region: "20",
 });
-const from = $router.query.from.value;
-console.log(from.value);
+const from = useRouter().from;
+console.log(from);
 const searchForm = reactive({
   search: "",
 });
