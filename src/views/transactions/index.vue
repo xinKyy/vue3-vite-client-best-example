@@ -12,12 +12,7 @@
       </div>
     </div>
     <div class="change">
-      <el-tabs
-        v-model="activeName"
-        @tab-click="handleClick"
-        tabPosition="top"
-        class="demo-tabs fz24"
-      >
+      <el-tabs v-model="activeName" tabPosition="top" class="demo-tabs fz24">
         <el-tab-pane
           label="Home"
           name="first"
@@ -26,23 +21,27 @@
         >
           <p class="fz30 mb40 mt40">
             Transaction
-            <span class="fz16" style="color: #999">{{ this.hash }}</span>
+            <span class="fz16" style="color: #999">{{
+              this.transactionArr.hash
+            }}</span>
           </p>
-          <div class="detail df fdc" v-for="(v, i) in detailData" :key="i">
+          <div class="detail df fdc">
             <div class="item bsbb df jcsb">
               <p style="width: 300px">Transaction Hash:</p>
-              <h4>{{ v.hash }}</h4>
+              <h4>{{ transactionArr.hash }}</h4>
               <p></p>
             </div>
-            <!-- <div class="item bsbb df jcsb">
+            <div class="item bsbb df jcsb">
               <p style="width: 300px">Status:</p>
-              <h4 :class="v.status == 1 ? 'green' : 'red'">{{ this.stat }}</h4>
+              <h4 :class="transactionArr.status == 1 ? 'green' : 'red'">
+                {{ this.stat }}
+              </h4>
               <p></p>
-            </div> -->
+            </div>
             <div class="item bsbb df jcsb">
               <p style="width: 300px">Block:</p>
               <h4>
-                <span class="b3 mr20">14</span>
+                <span class="b3 mr20">{{ transactionArr.blockNumber }}</span>
                 <span>-14 block confirmations</span>
               </h4>
               <p></p>
@@ -50,53 +49,56 @@
             <div class="item bsbb df jcsb">
               <p style="width: 300px">TimeStamp:</p>
               <h4>
-                {{ deltaT(v.timestamp * 1000) }} (2013-03-16 14:19:49 +0800)
+                {{ deltaT(transactionArr.timestamp * 1000) }}
+                (2013-03-16 14:19:49 +0800)
               </h4>
               <p></p>
             </div>
             <div class="item bsbb df jcsb">
               <p style="width: 300px">From:</p>
-              <h4 class="b3">{{ v.from }}</h4>
+              <h4 class="b3" @click="goFromAddr(transactionArr.from)">
+                {{ transactionArr.from }}
+              </h4>
+              <p></p>
+            </div>
+            <div class="item bsbb df jcsb">
+              <p style="width: 300px">To:</p>
+              <h4 class="b3" @click="goTo(v)">{{ transactionArr.to }}</h4>
               <p></p>
             </div>
             <!-- <div class="item bsbb df jcsb">
-              <p style="width: 300px">To:</p>
-              <h4 class="b3" @click="goTo(v)">{{ v.to }}</h4>
-              <p></p>
-            </div> -->
-            <div class="item bsbb df jcsb">
               <p style="width: 300px">Value:</p>
               <h4 class="b3"></h4>
               <p></p>
-            </div>
+            </div> -->
             <div class="item bsbb df jcsb">
               <p style="width: 300px">Transaction fee:</p>
               <h4>
-                <span>{{ v.txFee }}</span> CHER
+                <span>{{ transactionArr.txFee }}</span> CHER
               </h4>
               <p></p>
             </div>
             <div class="item bsbb df jcsb">
               <p style="width: 300px">Gas Limit:</p>
-              <h4>{{ v.gasUsed }}</h4>
+              <h4>{{ transactionArr.gasUsed }}</h4>
               <p></p>
             </div>
             <div class="item bsbb df jcsb">
               <p style="width: 300px">Gas Used by Transaction:</p>
-              <h4>{{ v.gasUsed }}</h4>
+              <h4>{{ transactionArr.gasUsed }}</h4>
               <p></p>
             </div>
             <div class="item bsbb df jcsb">
               <p style="width: 300px">Gas Price:</p>
               <h4>
-                <span>{{ v.gasPriceEther }}</span> CHER (
-                <span>{{ v.gasPriceGwei }}</span> Gwei)
+                <span>{{ transactionArr.gasPriceEther }}</span> CHER (
+                <span>{{ transactionArr.gasPriceGwei }}</span> Gwei)
               </h4>
               <p></p>
             </div>
             <div class="item bsbb df jcsb">
               <p style="width: 300px">None:</p>
-              <h4>{{ v.nonce }}</h4>
+              <h4>{{ transactionArr.nonce }}</h4>
               <p></p>
             </div>
             <div class="item bsbb df">
@@ -112,7 +114,7 @@
                 id="1"
                 cols="105"
                 rows="10"
-                v-model="v.input"
+                v-model="transactionArr.input"
               ></textarea>
             </div>
           </div>
@@ -139,45 +141,21 @@
 </template>
 
 <script>
-import { getTransation, getTransactionDetail } from "@/api/index";
+import { getTransactionDetail } from "@/api/index";
 export default {
   data() {
     return {
       input: "",
       activeName: "first",
-      data: this.$route.query.blockNumber,
+      hash: this.$route.query.hash,
       transactionArr: [],
-      detailData: [],
+      detailData: {},
       stat: "",
-      hash: "",
+      // hash: "",
     };
   },
   methods: {
-    handleClick(tab) {
-      this.$router.push(tab.props.label);
-    },
-    getTransationData() {
-      getTransation().then((res) => {
-        this.transactionArr = res.data.result;
-        res.data.result.filter((v) => {
-          if (v.blockNumber === this.data) {
-            this.detailData.push(v);
-            this.hash = v.hash;
-          }
-          if (v.status == 1) {
-            this.stat = "Success";
-          } else if (v.status == 0) {
-            this.stat = "Fail";
-          }
-        });
-      });
-    },
     // 获取详情
-    getDetailData() {
-      getTransactionDetail().then((res) => {
-        console.log(res);
-      });
-    },
     deltaT(faultDat) {
       var stime = Date.parse(new Date(faultDat));
       var etime = Date.parse(new Date());
@@ -213,10 +191,25 @@ export default {
         this.$router.push("/nft");
       }
     },
+    goFromAddr(n) {
+      this.$router.push({
+        path: "/from",
+        query: {
+          from: n,
+        },
+      });
+    },
   },
-  created() {
-    this.getTransationData();
-    this.getDetailData();
+  created() {},
+  async mounted() {
+    getTransactionDetail({ tx: this.hash }).then((res) => {
+      this.transactionArr = res.data.result;
+      if (this.transactionArr.status == 1) {
+        this.stat = "Success";
+      } else if (this.transactionArr.status == 0) {
+        this.stat = "Fail";
+      }
+    });
   },
 };
 </script>

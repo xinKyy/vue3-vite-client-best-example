@@ -2,13 +2,15 @@
   <div class="home">
     <div class="search df aic jcsb p20 bsbb container">
       <img src="../../assets/images/explorer-logo.png" style="width: 200px" />
-      <div class="df">
-        <el-input
+      <div class="df aic">
+        <input
+          style="width: 350px; height: 45px; text-indent: 16px"
+          type="text"
           class="mr20"
           v-model="input"
           placeholder="Search by Address/Txhash/BlockNum/BlockHash"
         />
-        <el-button>搜索</el-button>
+        <el-icon size="26"><Search /></el-icon>
       </div>
     </div>
     <div class="change">

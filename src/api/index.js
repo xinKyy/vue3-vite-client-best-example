@@ -25,7 +25,7 @@ export const getTransactionDetail = (data) => {
   return request({
     url: '/api/getTransactionDetail',
     method: 'POST',
-    data: {}
+    data
   })
 }
 export const getContract = (data) => {

@@ -56,6 +56,7 @@
               <p>Transfer</p>
               <p>Contract Transactions</p>
               <p>Contract Source</p>
+              <p>Upper Level</p>
             </div>
             <div class="contents">
               <div class="on balance">
@@ -133,32 +134,6 @@
                       <td class="tac" style="width: 165px">Age</td>
                     </tr>
                   </thead>
-                  <!-- <tbody class="fz14" style="text-indent: 3px">
-                <tr v-for="(v, i) in detailData" :key="i">
-                  <td class="b3">
-                    <span class="elli22">
-                      {{ v.blockHash }}
-                    </span>
-                  </td>
-                  <td class="b3 tac" style="width: 65px">
-                    {{ v.blockNumber }}
-                  </td>
-                  <td class="b1" style="width: 165px">
-                    <span class="elli22" style="margin-left: 40px">{{
-                      v.from
-                    }}</span>
-                  </td>
-                  <td class="b3" style="width: 165px">
-                    <span class="elli22" style="margin-left: 40px">{{
-                      v.to
-                    }}</span>
-                  </td>
-                  <td class="b1 tac" style="width: 65px">0</td>
-                  <td class="b1" style="width: 165px; text-align: right">
-                    {{ deltaT(v.timestamp * 1000) }}
-                  </td>
-                </tr>
-              </tbody> -->
                 </table>
               </div>
               <div class="source fz18">
@@ -217,6 +192,22 @@
                   </textarea>
                 </div>
               </div>
+              <div class="level">
+                <p class="fw7 mt20" style="color: #666">Enter Your Address</p>
+                <div class="posi">
+                  <el-input
+                    class="mt20 ipt1"
+                    v-model="input4"
+                    placeholder="0xf9f412bAdd9b4451670bdC605f5e4eaACcefbccE"
+                  >
+                  </el-input>
+                  <button @click="getLevel">Go!</button>
+                </div>
+                <p id="level" class="fz24 mt40" style="color: #666">
+                  Your Upper Level
+                  <span class="b2">{{ level }}</span>
+                </p>
+              </div>
             </div>
           </div>
         </el-tab-pane>
@@ -236,6 +227,7 @@ export default {
       input1: "", //balance
       input2: "", //transfer
       input3: "", //amount
+      input4: "", //level
       activeName: "second",
       tokens: null,
       addr: this.$route.query.tokens,
@@ -849,6 +841,7 @@ export default {
           type: "function",
         },
       ],
+      level: null,
     };
   },
   methods: {
@@ -894,7 +887,6 @@ export default {
         .transfer(this.input2, this.input3)
         .send({ from: fromAddress[0] })
         .then(function (r) {
-          console.log("use the contract to send coin:");
           console.log(r);
         });
     },
@@ -903,6 +895,25 @@ export default {
       if (this.tokens != null) {
         tokens.classList.add("on");
       }
+    },
+    showLevel() {
+      const level = document.querySelector("#level");
+      if (this.level != null) {
+        level.classList.add("on");
+      }
+    },
+    async getLevel() {
+      let web3 = window.ethereum && new Web3(window.ethereum);
+      const contractAbi = this.tokenAbi;
+      const contractAddress = "0xF75fBB9273D50cc14a0DB178bf4b823f02c9F5e5"; //查询用户地址
+      const myContract = new web3.eth.Contract(contractAbi, contractAddress); //所有代币的abi可以通用（abi,合约地址）
+      await myContract.methods
+        .getUpperLevel(this.input4)
+        .call()
+        .then((res) => {
+          this.level = res;
+          this.showLevel();
+        });
     },
   },
   created() {},
@@ -1016,7 +1027,7 @@ export default {
               button {
                 position: absolute;
                 right: 20%;
-                bottom: 0;
+                top: 20px;
                 width: 100px;
                 height: 40px;
                 border: none;
@@ -1053,6 +1064,33 @@ export default {
                 background: #578ebe;
                 color: #fff;
                 font-size: 24px;
+              }
+            }
+          }
+          .level {
+            .ipt1 {
+              height: 40px;
+              width: 80%;
+            }
+
+            .posi {
+              position: relative;
+              button {
+                position: absolute;
+                right: 20%;
+                bottom: 0;
+                width: 100px;
+                height: 40px;
+                border: none;
+                background: #578ebe;
+                color: #fff;
+                font-size: 24px;
+              }
+            }
+            #level {
+              display: none;
+              &.on {
+                display: block;
               }
             }
           }
