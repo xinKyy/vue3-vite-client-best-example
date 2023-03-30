@@ -763,14 +763,15 @@ export default {
       const contractAbi = this.nftAbi;
       const contractAddress = "0x91A0600E51dC7f6f7B211b1EE1464Cb2dA7168b7"; //查询用户地址
       const myContract = new web3.eth.Contract(contractAbi, contractAddress); //所有代币的abi可以通用（abi,合约地址）
-
+      let fromAddress = await web3.eth.getAccounts();
+      console.log(fromAddress);
       myContract.methods
         .transferFrom(
           "0x7B6191C29ad7e732a36806D33FF28803091C056b",
           this.input2,
           this.input3
         )
-        .send({ from: "0x7B6191C29ad7e732a36806D33FF28803091C056b" })
+        .send({ from: fromAddress[0] })
         .then((r) => {
           this.transactionArr.push(r);
           console.log(r);

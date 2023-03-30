@@ -18,7 +18,7 @@ export const getAddr = (data) => {
   return request({
     url: '/api/getAddr',
     method: 'POST',
-    data: {}
+    data
   })
 }
 export const getTransactionDetail = (data) => {
@@ -35,3 +35,4 @@ export const getContract = (data) => {
     data
   })
 }
+

@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="search df aic jcsb p20 bsbb container">
+    <div class="search df aic jcsb p10 bsbb container">
       <img src="../../assets/images/explorer-logo.png" style="width: 200px" />
       <div class="df">
         <el-input
@@ -103,9 +103,12 @@
                   <div class="df aic elli bsbb" style="padding-bottom: 10px">
                     <p style="width: 45%" class="df aic mr20">
                       <span style="color: #69a1b3">From &ensp;</span>
-                      <span class="elli3 a2" style="color: #09c">{{
-                        v.from
-                      }}</span>
+                      <span
+                        class="elli3 a2"
+                        style="color: #09c"
+                        @click="goFromAddr(v)"
+                        >{{ v.from }}</span
+                      >
                     </p>
                     <p style="width: 45%" class="df aic">
                       <span style="color: #69a1b3">To &ensp;</span>
@@ -128,7 +131,6 @@
       </el-tabs>
     </div>
   </div>
-  <footer-bar class="mt60"></footer-bar>
 </template>
 
 <script>
@@ -149,11 +151,18 @@ export default {
   },
   methods: {
     goToAddr(n) {
-      console.log();
       this.$router.push({
         path: "/to",
         query: {
           to: n.to,
+        },
+      });
+    },
+    goFromAddr(n) {
+      this.$router.push({
+        path: "/from",
+        query: {
+          from: n.from,
         },
       });
     },
@@ -265,103 +274,6 @@ export default {
         console.log(res);
       });
     },
-    // // 唤起钱包
-    // get() {
-    //   if (window.ethereum) {
-    //     window.ethereum.enable().then((res) => {
-    //       alert("当前钱包地址:" + res[0]);
-    //     });
-    //   } else {
-    //     alert("请安装MetaMask钱包");
-    //   }
-    // },
-    // async getETH() {
-    //   let web3 = new Web3(window.web3.currentProvider);
-    //   console.log(web3);
-    //   // console.log(web3.eth.getAccounts())
-    //   let fromAddress = await web3.eth.getAccounts();
-    //   console.log(web3.eth.getBalance(fromAddress[0]));
-    //   console.log(fromAddress);
-    //   web3.eth.getBalance(fromAddress[0], (err, res) => {
-    //     if (!err) {
-    //       alert("ETH余额==" + res / Math.pow(10, 18));
-    //       //console.log(res)
-    //     }
-    //   });
-    // },
-    // //ETH转账
-    // async getTransfer() {
-    //   let web3 = new Web3(window.web3.currentProvider);
-    //   let fromAddress = await web3.eth.getAccounts();
-    //   let amount = 0.01 * Math.pow(10, 18);
-    //   let toAddress = "0x17D98A1c1D4814B03d71a08a07AF4C8CCABb7E2E";
-    //   web3.eth.sendTransaction(
-    //     {
-    //       gas: 21000,
-    //       gasPrice: 5000000000,
-    //       from: fromAddress[0],
-    //       to: toAddress,
-    //       value: amount,
-    //     },
-    //     (err, result) => {
-    //       console.log("转账Hash=", result);
-    //     }
-    //   );
-    // },
-
-    // //直接转账充币地址
-    // async getTokenTransfer() {
-    //   if (window.web3) {
-    //     let web3 = new Web3(window.web3.currentProvider);
-    //     let ethContract = new web3.eth.Contract(
-    //       abi.abi,
-    //       "0x3d2dd604866d0ec1ddd5e8ef27848a6fc0962018"
-    //     ); //所有代币的abi可以通用（abi,合约地址）
-    //     //转账数量
-    //     let amount = 100 * Math.pow(10, 18); //转账100个
-    //     //小狐狸账户
-    //     let fromAddress = await web3.eth.getAccounts();
-    //     //接收地址
-    //     let toAddress = "0xcaD75EADAf24F41d6274E129d7aE54764d7cd8E7";
-    //     ethContract.methods
-    //       .transfer(toAddress, amount + "")
-    //       .send({ from: fromAddress[0] });
-    //   }
-    // },
-    // //查询授权金额
-    // async getAllowance() {
-    //   if (window.web3) {
-    //     let web3 = new Web3(window.web3.currentProvider);
-    //     let fromAddress = "0x394A64e586FC05bD28783351F14dfcc426EFD230"; //查询地址
-    //     let ethContract = new web3.eth.Contract(
-    //       abi.abi,
-    //       "0x3d2dd604866d0ec1ddd5e8ef27848a6fc0962018"
-    //     ); //所有代币的abi可以通用（abi,合约地址）
-    //     let toAddress = "0xcaD75EADAf24F41d6274E129d7aE54764d7cd8E7"; //被授权地址
-    //     let balance = await ethContract.methods
-    //       .allowance(fromAddress, toAddress)
-    //       .call();
-    //     alert("授权金额" + balance / Math.pow(10, 18));
-    //   }
-    // },
-    // //授权
-    // async getApprove() {
-    //   if (window.web3) {
-    //     let web3 = new Web3(window.web3.currentProvider);
-    //     let ethContract = new web3.eth.Contract(
-    //       this.abi,
-    //       "0x6e65a1e833698f00573b9106427596c8bb349cb2"
-    //     ); //所有代币的abi可以通用（abi,合约地址）
-    //     //授权数量
-    //     let amount = 100 * Math.pow(10, 18); //转账100个
-    //     let toAddress = "0xcaD75EADAf24F41d6274E129d7aE54764d7cd8E7"; //被授权地址
-    //     //小狐狸账户
-    //     let fromAddress = await web3.eth.getAccounts();
-    //     ethContract.methods
-    //       .approve(toAddress, amount + "")
-    //       .send({ from: fromAddress[0] });
-    //   }
-    // },
   },
   created() {
     this.send();
@@ -369,90 +281,6 @@ export default {
     this.getTransationData();
   },
 };
-// import { reactive, ref } from "vue";
-
-// import { useRouter } from "vue-router";
-
-// const $router = useRouter();
-// const input = ref("");
-// const activeName = ref("first");
-// const blockArr = reactive([]);
-// const transactionArr = reactive([]);
-// const days = ref("");
-// const hours = ref("");
-
-// // const Web3 = reactive(require("web3"));
-// const rpcURL = ref("http://3.20.206.120:9650/ext/bc/C/rpc"); // Your RPC URL goes here
-// const abi = reactive([
-//   {
-//     inputs: [],
-//     name: "retrieve",
-//     outputs: [
-//       {
-//         internalType: "uint256",
-//         name: "",
-//         type: "uint256",
-//       },
-//     ],
-//     stateMutability: "view",
-//     type: "function",
-//   },
-//   {
-//     inputs: [
-//       {
-//         internalType: "uint256",
-//         name: "num",
-//         type: "uint256",
-//       },
-//     ],
-//     name: "store",
-//     outputs: [],
-//     stateMutability: "nonpayable",
-//     type: "function",
-//   },
-// ]);
-// const web3 = new Web3(rpcURL);
-// const address = ref("0x6e65a1e833698f00573b9106427596c8bb349cb2");
-// web3.eth.getBalance(address, (err, wei) => {
-//   balance = web3.utils.fromWei(wei, "ether");
-// });
-
-// const getBlockData = () => {
-//   getBlock().then((res) => {
-//     blockArr.value = res.data.result;
-//   });
-// };
-// getBlockData();
-
-// const getTransationData = () => {
-//   getTransation().then((res) => {
-//     transactionArr.value = res.data.result;
-//     console.log(transactionArr.value);
-//   });
-// };
-// getTransationData();
-
-// 时间差
-// const deltaT = (faultDat) => {
-//   var stime = Date.parse(new Date(faultDat));
-//   var etime = Date.parse(new Date());
-//   // 两个时间戳相差的毫秒数
-//   var usedTime = etime - stime;
-//   // 计算相差的天数
-//   const days = Math.floor(usedTime / (24 * 3600 * 1000));
-//   // 计算天数后剩余的毫秒数
-//   var leave1 = usedTime % (24 * 3600 * 1000);
-//   // 计算出小时数
-//   const hours = Math.floor(leave1 / (3600 * 1000));
-//   // 计算小时数后剩余的毫秒数
-//   var leave2 = leave1 % (3600 * 1000);
-//   // 计算相差分钟数
-//   var minutes = Math.floor(leave2 / (60 * 1000));
-//   var time = days + " " + "days" + "," + hours + " " + "hours ago";
-//   return time;
-//   console.log(time);
-// };
-// deltaT(1679401172000);
 </script>
 
 <style lang="scss" scoped>
