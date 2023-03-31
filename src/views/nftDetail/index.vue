@@ -48,6 +48,7 @@
                       >Address</span
                     >
                     <el-input
+                      @blur="getTokenId"
                       class="mt20 ipt1"
                       v-model="input2"
                       label="address"
@@ -59,14 +60,29 @@
                     <span
                       class="mr10 b1"
                       style="padding-top: 10px; display: inline-block"
-                      >Amount</span
+                      >TokenId</span
                     >
-                    <el-input
+                    <el-form>
+                      <el-form-item>
+                        <el-select
+                          v-model="tokenId"
+                          placeholder="please select your tokenId"
+                        >
+                          <el-option
+                            v-for="(v, i) in tokenidArr"
+                            :key="i"
+                            :label="v"
+                            :value="v"
+                          />
+                        </el-select>
+                      </el-form-item>
+                    </el-form>
+                    <!-- <el-input
                       class="mt20 ipt2"
                       v-model="input3"
                       placeholder="please input amount"
                     >
-                    </el-input>
+                    </el-input> -->
                   </div>
                   <button class="mt20" @click="getTransfer">Go!</button>
                 </div>
@@ -146,6 +162,7 @@ export default {
       input3: "", //transfer
       activeName: "third",
       tokens: null,
+      token: null,
       nft: this.$route.query.nft,
       addrHash: "",
       detailData: [],
@@ -682,6 +699,49 @@ export default {
           inputs: [
             {
               internalType: "uint256",
+              name: "index",
+              type: "uint256",
+            },
+          ],
+          name: "tokenByIndex",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "owner",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "index",
+              type: "uint256",
+            },
+          ],
+          name: "tokenOfOwnerByIndex",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
               name: "tokenId",
               type: "uint256",
             },
@@ -692,6 +752,19 @@ export default {
               internalType: "string",
               name: "",
               type: "string",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "totalSupply",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
             },
           ],
           stateMutability: "view",
@@ -712,6 +785,8 @@ export default {
         },
       ],
       transactionArr: [],
+      tokenidArr: [],
+      tokenId: "",
     };
   },
   methods: {
@@ -743,34 +818,50 @@ export default {
     async getBalance() {
       let web3 = window.ethereum && new Web3(window.ethereum);
       const contractAbi = this.nftAbi;
-      // 0x91A0600E51dC7f6f7B211b1EE1464Cb2dA7168b7
-      // 0x3205DcAD89D655DC66AD70F12Fa321044569029A
-      const contractAddress = "0x91A0600E51dC7f6f7B211b1EE1464Cb2dA7168b7"; //查询用户地址
-      const myContract = new web3.eth.Contract(contractAbi, contractAddress); //所有代币的abi可以通用（abi,合约地址）
-
-      await myContract.methods
+      const contractAddress = "0x6e65a1e833698f00573b9106427596C8bb349cB2";
+      const myContract = new web3.eth.Contract(contractAbi, contractAddress);
+      myContract.methods
         .balanceOf(this.input1)
         .call()
         .then((res) => {
           this.tokens = res;
-          console.log(res);
           this.showTokens();
+        });
+    },
+    async getTokenId() {
+      let web3 = window.ethereum && new Web3(window.ethereum);
+      const contractAbi = this.nftAbi;
+      const contractAddress = "0x6e65a1e833698f00573b9106427596C8bb349cB2"; //查询用户地址
+      const myContract = new web3.eth.Contract(contractAbi, contractAddress); //所有代币的abi可以通用（abi,合约地址）
+      let fromAddress = await web3.eth.getAccounts();
+      myContract.methods
+        .balanceOf(this.input2)
+        .call()
+        .then((res) => {
+          this.token = res;
+          for (var i = 0; i < this.token; i++) {
+            myContract.methods
+              .tokenOfOwnerByIndex(fromAddress[0], i)
+              .call()
+              .then((res) => {
+                this.tokenidArr.push(res);
+                console.log(this.tokenidArr, 999);
+              });
+          }
         });
     },
     //ETH转账
     async getTransfer() {
       let web3 = window.ethereum && new Web3(window.ethereum);
       const contractAbi = this.nftAbi;
-      const contractAddress = "0x91A0600E51dC7f6f7B211b1EE1464Cb2dA7168b7"; //查询用户地址
-      const myContract = new web3.eth.Contract(contractAbi, contractAddress); //所有代币的abi可以通用（abi,合约地址）
+      const contractAddress = "0x6e65a1e833698f00573b9106427596C8bb349cB2";
+      const myContract = new web3.eth.Contract(contractAbi, contractAddress);
       let fromAddress = await web3.eth.getAccounts();
-      console.log(fromAddress);
       myContract.methods
-        .transferFrom(fromAddress[0], this.input2, this.input3)
+        .transferFrom(fromAddress[0], this.input2, this.tokenId)
         .send({ from: fromAddress[0] })
         .then((r) => {
           this.transactionArr.push(r);
-          console.log(r);
         });
     },
     showTokens() {
@@ -779,15 +870,12 @@ export default {
         tokens.classList.add("on");
       }
     },
-    getAccount() {
-      let web3 = window.ethereum && new Web3(window.ethereum);
-      console.log(web3.eth.accounts.create(web3.utils.randomHex(32)));
-    },
+    // getAccount() {
+    //   let web3 = window.ethereum && new Web3(window.ethereum);
+    //   console.log(web3.eth.accounts.create(web3.utils.randomHex(32)));
+    // },
   },
-  created() {
-    this.getAccount();
-    // console.log(web3.eth.account.create());
-  },
+  created() {},
   async mounted() {
     const titles = document.querySelectorAll(".title>p");
     const contents = document.querySelectorAll(".contents>div");
@@ -836,6 +924,10 @@ export default {
   background: #578ebe;
   color: #fff;
   font-size: 20px;
+}
+::v-deep .el-form-item__content {
+  margin-top: 20px;
+  height: 40px;
 }
 .demo-tabs > .el-tabs__content {
   padding: 32px;
@@ -914,7 +1006,8 @@ export default {
             }
           }
           .transfer {
-            .ipt1 {
+            .ipt1,
+            .ipt2 {
               height: 40px;
               width: 80%;
             }

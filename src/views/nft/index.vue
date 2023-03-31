@@ -51,7 +51,7 @@ export default {
       activeName: "third",
       blockArr: [],
       transactionArr: [],
-      nft: "0x91A0600E51dC7f6f7B211b1EE1464Cb2dA7168b7",
+      nft: "0x6e65a1e833698f00573b9106427596C8bb349cB2",
     };
   },
   methods: {

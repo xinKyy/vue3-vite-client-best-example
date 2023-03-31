@@ -48,7 +48,7 @@ export default {
     return {
       input: "",
       activeName: "second",
-      tokens: "0xF75fBB9273D50cc14a0DB178bf4b823f02c9F5e5",
+      tokens: "0x86C827222356C4F4af5851a4B4C3Cc9fCaE60e46",
       tokenAbi: [
         {
           inputs: [
