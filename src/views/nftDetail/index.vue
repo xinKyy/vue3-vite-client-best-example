@@ -47,8 +47,8 @@
                       style="padding-top: 10px; display: inline-block"
                       >Address</span
                     >
+                    <!-- @blur="getTokenId" -->
                     <el-input
-                      @blur="getTokenId"
                       class="mt20 ipt1"
                       v-model="input2"
                       label="address"
@@ -834,8 +834,9 @@ export default {
       const contractAddress = "0x6e65a1e833698f00573b9106427596C8bb349cB2"; //查询用户地址
       const myContract = new web3.eth.Contract(contractAbi, contractAddress); //所有代币的abi可以通用（abi,合约地址）
       let fromAddress = await web3.eth.getAccounts();
+      let account = fromAddress[0];
       myContract.methods
-        .balanceOf(this.input2)
+        .balanceOf(account)
         .call()
         .then((res) => {
           this.token = res;
@@ -845,7 +846,6 @@ export default {
               .call()
               .then((res) => {
                 this.tokenidArr.push(res);
-                console.log(this.tokenidArr, 999);
               });
           }
         });
@@ -875,7 +875,9 @@ export default {
     //   console.log(web3.eth.accounts.create(web3.utils.randomHex(32)));
     // },
   },
-  created() {},
+  created() {
+    this.getTokenId();
+  },
   async mounted() {
     const titles = document.querySelectorAll(".title>p");
     const contents = document.querySelectorAll(".contents>div");
