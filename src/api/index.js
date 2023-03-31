@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-
+import response from '@/utils/response'
 export const getBlock = (data) => {
   return request({
     url: '/api/getBlock',
@@ -31,6 +31,13 @@ export const getTransactionDetail = (data) => {
 export const getContract = (data) => {
   return request({
     url: '/api/getContract',
+    method: 'POST',
+    data
+  })
+}
+export const getWebrelay = (data) => {
+  return response({
+    url: '/web3relay',
     method: 'POST',
     data
   })

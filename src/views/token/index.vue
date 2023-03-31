@@ -42,12 +42,13 @@
 </template>
 
 <script>
+import Token from "@/common/token.json";
 export default {
   data() {
     return {
       input: "",
       activeName: "second",
-      tokens: "0x86C827222356C4F4af5851a4B4C3Cc9fCaE60e46",
+      tokens: Token[0].address,
     };
   },
   methods: {

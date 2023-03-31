@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import NFT from "@/common/nft.json";
 import { getBlock, getTransation } from "@/api/index";
 export default {
   data() {
@@ -51,7 +52,7 @@ export default {
       activeName: "third",
       blockArr: [],
       transactionArr: [],
-      nft: "0x6e65a1e833698f00573b9106427596C8bb349cB2",
+      nft: NFT[0].address,
     };
   },
   methods: {
@@ -82,14 +83,6 @@ export default {
       var minutes = Math.floor(leave2 / (60 * 1000));
       var time = days + " " + "days" + "," + hours + " " + "hours ago";
       return time;
-    },
-    goDetail(n) {
-      this.$router.push({
-        path: "/transactions",
-        query: {
-          blockNumber: n.blockNumber,
-        },
-      });
     },
     goHome(pane) {
       if (pane.props.label == "Home") {

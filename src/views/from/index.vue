@@ -31,12 +31,14 @@
               <div class="content">
                 <div class="df aic jcsb mt20">
                   <div class="df fdc">
-                    <p class="b1 fz18"><span>210.1571</span> CHER</p>
+                    <p class="b1 fz18">
+                      <span>{{ web3relay.balance }}</span> CHER
+                    </p>
                     <p class="b3 fw7 fz16">CHER Balance ?</p>
                   </div>
                 </div>
                 <div class="mt20 fz16">
-                  <span>18 &nbsp;</span>
+                  <span>{{ web3relay.count }} &nbsp;</span>
                   <span class="b3 fw7">Transactions</span>
                 </div>
                 <div class="mt60 table">
@@ -155,7 +157,7 @@
 
 <script setup>
 import { ref, reactive } from "vue";
-import { getAddr } from "@/api/index";
+import { getAddr, getWebrelay } from "@/api/index";
 import { useRouter } from "vue-router";
 import { useRoute } from "vue-router";
 import footerBar from "../../components/footer/index.vue";
@@ -171,6 +173,27 @@ const searchForm = reactive({
   search: "",
 });
 const tableData = reactive([]);
+const web3relay = reactive({
+  balance: "",
+  count: "",
+  bytecode: "",
+  isContract: "",
+});
+const totalCount = ref(null);
+const getWeb = () => {
+  getWebrelay({ addr: from, options: ["balance", "count", "bytecode"] }).then(
+    (res) => {
+      web3relay.value = res.data;
+      web3relay.balance = res.data.balance;
+      web3relay.bytecode = res.data.bytecode;
+      web3relay.count = res.data.count;
+      web3relay.isContract = res.data.isContract;
+      totalCount.value = res.data.count;
+      console.log(totalCount.value, 111);
+    }
+  );
+};
+getWeb();
 const getData = () => {
   getAddr({
     addr: from,
@@ -183,9 +206,11 @@ const getData = () => {
     start: 0,
   }).then((res) => {
     tableData.value = res.data.result.data;
+    // console.log(res.data.result.data);
   });
 };
 getData();
+
 const goHome = (pane) => {
   if (pane.props.label == "Home") {
     $router.push("/Home");
