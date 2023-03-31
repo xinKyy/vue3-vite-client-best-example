@@ -905,7 +905,8 @@ export default {
     async getLevel() {
       let web3 = window.ethereum && new Web3(window.ethereum);
       const contractAbi = this.tokenAbi;
-      const contractAddress = "0xF75fBB9273D50cc14a0DB178bf4b823f02c9F5e5"; //查询用户地址
+      // 0xF75fBB9273D50cc14a0DB178bf4b823f02c9F5e5
+      const contractAddress = "0x86C827222356C4F4af5851a4B4C3Cc9fCaE60e46"; //查询用户地址
       const myContract = new web3.eth.Contract(contractAbi, contractAddress); //所有代币的abi可以通用（abi,合约地址）
       await myContract.methods
         .getUpperLevel(this.input4)
