@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="search df aic jcsb p20 bsbb container">
+    <div class="search df aic jcsb p10 bsbb container">
       <img src="../../assets/images/explorer-logo.png" style="width: 200px" />
       <div class="df aic">
         <input
@@ -21,15 +21,18 @@
         @tab-click="goHome"
       >
         <el-tab-pane label="Home" name="first" class="first"></el-tab-pane>
-        <el-tab-pane label="Tokens" name="second" class="second container">
-          <p class="fz30 b1 mt20" style="margin-left: 50px">Tokens</p>
+        <el-tab-pane label="Tokens" name="second" class="second fz16 container">
+          <p class="fz30 b1 mt20 fw7" style="margin-left: 50px">Tokens</p>
           <div class="content p10 bsbb mt40 df fdc">
-            <div class="list df fdc fz16">
+            <div class="list df fdc">
               <div class="item p10 bsbb df jcsb">
-                <span class="b3" style="margin-right: 120px">AA(BB)</span>
-                <span class="b2 hover" @click="goTokenDetail">{{
-                  tokens
-                }}</span>
+                <span class="b4">AA(BB)</span>
+                <span
+                  class="hover"
+                  style="color: #33a6dc"
+                  @click="goTokenDetail"
+                  >{{ tokens }}</span
+                >
                 <span></span>
               </div>
             </div>
@@ -109,58 +112,6 @@ export default {
     }
   }
   .change {
-    .first {
-      .topData {
-        p {
-          font-size: 16px;
-          color: #6b778c;
-          margin-top: 5px;
-        }
-      }
-      .contentData {
-        width: 100%;
-        > div {
-          width: 40%;
-          height: 600px;
-        }
-        .left {
-          .list {
-            overflow-y: scroll;
-            height: 400px;
-            .item {
-              background: #effbfb;
-              width: 100%;
-              height: 100px;
-              border-left: 4px solid #3cc;
-              color: #3cc;
-            }
-          }
-        }
-        .right {
-          .list {
-            overflow-y: scroll;
-            height: 400px;
-            .item {
-              width: 100%;
-              height: 90px;
-              border-bottom: 1px solid #ddd;
-              .a1 {
-                width: 200px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap; /*加宽度width属来兼容部分浏览*/
-              }
-              .a2 {
-                width: 300px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap; /*加宽度width属来兼容部分浏览*/
-              }
-            }
-          }
-        }
-      }
-    }
     .second {
       .content {
         .list {
@@ -173,18 +124,6 @@ export default {
               color: #666 !important;
               text-decoration: underline;
             }
-          }
-        }
-      }
-    }
-    .third {
-      .content {
-        .list {
-          .item {
-            border-top: 1px solid #ddd;
-            width: 80%;
-            height: 100px;
-            margin: 0 auto;
           }
         }
       }

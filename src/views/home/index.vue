@@ -23,19 +23,19 @@
         <el-tab-pane label="Home" name="first" class="first container">
           <div class="topData mt20 df aic jcsb">
             <div>
-              <h3># 0</h3>
+              <h3># {{ topData.blockHeight }}</h3>
               <p>BLOCK HEIGHT</p>
             </div>
             <div>
-              <h3>S</h3>
+              <h3>{{ topData.blockTime }}S</h3>
               <p>BLOCK TIME</p>
             </div>
             <div>
-              <h3>0.00H/s</h3>
+              <h3>{{ topData.hashrate }}H/s</h3>
               <p>NETWORK HASHHRATE</p>
             </div>
             <div>
-              <h3>0.00H</h3>
+              <h3>{{ topData.difficulty }}H</h3>
               <p>DIFFICULTY</p>
             </div>
           </div>
@@ -92,8 +92,8 @@
                     <p class="elli df aic" style="width: 300px">
                       <span class="mr10" style="color: #69a1b3">TX &ensp;</span>
                       <span
-                        class="a1"
-                        style="color: #09c"
+                        class="a1 hover"
+                        style="color: #09c; display: inline-block"
                         @click="goDetail(v)"
                         >{{ v.hash }}</span
                       >
@@ -136,7 +136,7 @@
 </template>
 
 <script>
-import { getBlock, getTransation } from "@/api/index";
+import { getBlock, getTransation, getWebrelay } from "@/api/index";
 import Web3 from "web3";
 import footerBar from "../../components/footer/index.vue";
 export default {
@@ -146,6 +146,7 @@ export default {
       activeName: "first",
       blockArr: [],
       transactionArr: [],
+      topData: {},
     };
   },
   components: {
@@ -282,6 +283,12 @@ export default {
     this.getBlockData();
     this.getTransationData();
   },
+  mounted() {
+    getWebrelay({ action: "hashrate" }).then((res) => {
+      this.topData = res.data;
+      this.topData.hashrate = res.data.hashrate.toFixed(2);
+    });
+  },
 };
 </script>
 
@@ -297,7 +304,7 @@ export default {
 }
 ::v-deep .el-tabs__nav-scroll {
   margin-top: 30px;
-  margin-right: 350px;
+  margin-right: 20%;
   float: right;
   font-size: 24px !important;
 }
@@ -364,6 +371,10 @@ export default {
                 text-overflow: ellipsis;
                 white-space: nowrap; /*加宽度width属来兼容部分浏览*/
               }
+              .a1:hover {
+                text-decoration: overline;
+                color: red;
+              }
               .a2 {
                 width: 300px;
                 overflow: hidden;
@@ -371,29 +382,6 @@ export default {
                 white-space: nowrap; /*加宽度width属来兼容部分浏览*/
               }
             }
-          }
-        }
-      }
-    }
-    .second {
-      .list {
-        .item {
-          border-top: 1px solid #999;
-          .hover:hover {
-            color: #666;
-            text-decoration: underline;
-          }
-        }
-      }
-    }
-    .third {
-      .content {
-        .list {
-          .item {
-            border-top: 1px solid #ddd;
-            width: 80%;
-            height: 100px;
-            margin: 0 auto;
           }
         }
       }

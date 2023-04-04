@@ -1,14 +1,16 @@
 <template>
-  <div class="home container">
-    <div class="search df aic jcsb p20 bsbb">
+  <div class="home">
+    <div class="search df aic jcsb p10 bsbb container">
       <img src="../../assets/images/explorer-logo.png" style="width: 200px" />
-      <div class="df">
-        <el-input
+      <div class="df aic">
+        <input
+          style="width: 350px; height: 45px; text-indent: 16px"
+          type="text"
           class="mr20"
           v-model="input"
           placeholder="Search by Address/Txhash/BlockNum/BlockHash"
         />
-        <el-button>搜索</el-button>
+        <el-icon size="26"><Search /></el-icon>
       </div>
     </div>
     <div class="change">
@@ -20,7 +22,7 @@
       >
         <el-tab-pane label="Home" name="first" class="first"></el-tab-pane>
         <el-tab-pane label="Tokens" name="second" class="second"> </el-tab-pane>
-        <el-tab-pane label="NFT" name="third" class="third fz16">
+        <el-tab-pane label="NFT" name="third" class="third fz16 container">
           <p class="fz30 b1 mt20" style="margin-left: 50px">NFT</p>
           <div class="content p10 bsbb mt40 df fdc">
             <div class="list df fdc">
@@ -122,6 +124,7 @@ export default {
 ::v-deep .el-tabs__nav-scroll {
   margin-top: 30px;
   float: right;
+  margin-right: 20%;
   font-size: 24px !important;
 }
 ::v-deep .el-tabs__item {
@@ -143,69 +146,7 @@ export default {
     }
   }
   .change {
-    .first {
-      .topData {
-        p {
-          font-size: 16px;
-          color: #6b778c;
-          margin-top: 5px;
-        }
-      }
-      .contentData {
-        width: 100%;
-        > div {
-          width: 40%;
-          height: 600px;
-        }
-        .left {
-          .list {
-            overflow-y: scroll;
-            height: 400px;
-            .item {
-              background: #effbfb;
-              width: 100%;
-              height: 100px;
-              border-left: 4px solid #3cc;
-              color: #3cc;
-            }
-          }
-        }
-        .right {
-          .list {
-            overflow-y: scroll;
-            height: 400px;
-            .item {
-              width: 100%;
-              height: 90px;
-              border-bottom: 1px solid #ddd;
-              .a1 {
-                width: 200px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap; /*加宽度width属来兼容部分浏览*/
-              }
-              .a2 {
-                width: 300px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap; /*加宽度width属来兼容部分浏览*/
-              }
-            }
-          }
-        }
-      }
-    }
-    .second {
-      .list {
-        .item {
-          border-top: 1px solid #999;
-          .hover:hover {
-            color: #666;
-            text-decoration: underline;
-          }
-        }
-      }
-    }
+
     .third {
       .content {
         .list {
