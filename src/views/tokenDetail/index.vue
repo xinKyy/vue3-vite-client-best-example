@@ -41,9 +41,16 @@
               <div class="df fdc">
                 <span class="b3 fz20 fw7">Contract Creator</span>
                 <p class="b1 mt10 df fdc">
-                  <span class="elli3"> {{ contractData.owner }}...</span>
+                  <span
+                    class="elli3 contrahover1"
+                    @click="goTotalAddr(contractData.owner)"
+                  >
+                    {{ contractData.owner }}...</span
+                  >
                   <span style="margin: 5px 0">at txn</span>
-                  <span class="elli3"
+                  <span
+                    class="elli3 contrahover2"
+                    @click="goBlock(contractData.creationTransaction)"
                     >{{ contractData.creationTransaction }}...</span
                   >
                 </p>
@@ -186,36 +193,40 @@
                       <td style="width: 220px">
                         <span style="margin-left: 40px">To</span>
                       </td>
-                      <td style="width: 165px">CHER</td>
-                      <td class="tac" style="width: 165px">Age</td>
+                      <td style="width: 165px">{{ contractData.symbol }}</td>
+                      <td class="tac" style="width: 220px">Age</td>
                       <td class="b1"></td>
                     </tr>
                   </thead>
-                  <!-- <tbody class="fz14" style="text-indent: 3px">
-                      <tr v-for="(v, i) in tableData.value" :key="i">
-                        <td class="b3">
-                          <span class="elli22" @click="goTransaction(v)">
-                            {{ v[0] }}
-                          </span>
-                        </td>
-                        <td class="b3 tac" style="width: 65px">{{ v[1] }}</td>
-                        <td class="b1" style="width: 165px">
-                          <span class="elli22" style="margin-left: 40px">{{
-                            v[2]
-                          }}</span>
-                        </td>
-                        <td class="b3" style="width: 165px">
-                          <span class="elli22" style="margin-left: 40px">{{
-                            v[3]
-                          }}</span>
-                        </td>
-                        <td class="b1 tac" style="width: 65px">{{ v[4] }}</td>
-                        <td class="b1" style="width: 165px; text-align: right">
-                          {{ deltaT(v[6] * 1000) }}
-                        </td>
-                        <td class="b1"></td>
-                      </tr>
-                    </tbody> -->
+                  <tbody class="fz14" style="text-indent: 3px">
+                    <tr v-for="(v, i) in localTransactionData" :key="i">
+                      <td class="b3">
+                        <span class="elli22" @click="goTransaction(v)">
+                          {{ v.transactionHash }}
+                        </span>
+                      </td>
+                      <td class="b3 tac" style="width: 165px">
+                        {{ v.blockNumber }}
+                      </td>
+                      <td class="b1" style="width: 220px">
+                        <span class="elli22" style="margin-left: 40px">{{
+                          v.from
+                        }}</span>
+                      </td>
+                      <td class="b3" style="width: 165px">
+                        <span class="elli22" style="margin-left: 40px">{{
+                          v.to
+                        }}</span>
+                      </td>
+                      <td class="b1 tac" style="width: 165px">
+                        {{ v.cumulativeGasUsed }}
+                      </td>
+                      <td class="b1" style="width: 165px; text-align: right">
+                        <!-- {{ deltaT(v[6] * 1000) }} -->
+                      </td>
+                      <td class="b1"></td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
               <div class="source fz18">
@@ -297,11 +308,13 @@
         <el-tab-pane label="NFT" name="third" class="third fz14"> </el-tab-pane>
       </el-tabs>
     </div>
+    <footer-bar></footer-bar>
   </div>
 </template>
 
 <script>
 import Token from "@/common/token.json";
+import footerBar from "../../components/footer/index.vue";
 import Web3 from "web3";
 import { getContract, getWebrelay } from "@/api/index";
 export default {
@@ -326,9 +339,30 @@ export default {
       searchForm: {
         search: "",
       },
+      transactionList: [],
+      localTransactionData: JSON.parse(localStorage.getItem("transactionList")),
     };
   },
+  components: {
+    footerBar,
+  },
   methods: {
+    goTotalAddr(n) {
+      this.$router.push({
+        path: "/from",
+        query: {
+          from: n,
+        },
+      });
+    },
+    goBlock(n) {
+      this.$router.push({
+        path: "/block",
+        query: {
+          from: n,
+        },
+      });
+    },
     goHome(pane) {
       if (pane.props.label == "Home") {
         this.$router.push("/Home");
@@ -361,8 +395,13 @@ export default {
       myContract.methods
         .transfer(this.input2, this.input3)
         .send({ from: fromAddress[0] })
-        .then(function (r) {
-          console.log(r);
+        .then((r) => {
+          this.transactionList.push(r);
+          localStorage.setItem(
+            "transactionList",
+            JSON.stringify(this.transactionList)
+          );
+          console.log(this.transactionList);
         });
     },
     showTokens() {
@@ -391,7 +430,9 @@ export default {
         });
     },
   },
-  created() {},
+  created() {
+    console.log(this.localTransactionData);
+  },
   async mounted() {
     const titles = document.querySelectorAll(".title>p");
     const contents = document.querySelectorAll(".contents>div");
@@ -477,6 +518,12 @@ export default {
           > div {
             width: 50%;
           }
+        }
+        .contrahover1:hover {
+          text-decoration: underline;
+        }
+        .contrahover2:hover {
+          text-decoration: underline;
         }
       }
       .change {

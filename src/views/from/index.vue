@@ -51,98 +51,109 @@
                       >Transacions</span
                     >
                   </div>
-                  <div class="df aic jcsb mt20 mb20">
-                    <div class="df aic" style="height: 42px">
-                      <el-form
-                        :inline="true"
-                        :model="formInline"
-                        class="demo-form-inline"
-                        style="width: 60px"
-                      >
-                        <el-form-item>
-                          <el-select v-model="formInline.num">
-                            <el-option label="10" value="10" />
-                            <el-option label="20" value="20" />
-                            <el-option label="50" value="50" />
-                            <el-option label="100" value="100" />
-                            <el-option label="500" value="500" />
-                          </el-select>
-                        </el-form-item>
-                      </el-form>
-                      <span style="margin-left: 13px">transaction</span>
-                    </div>
-                    <div>
-                      <el-form
-                        :inline="true"
-                        :model="searchForm"
-                        class="demo-form-inline"
-                      >
-                        <el-form-item
-                          label="Search :"
-                          style="width: 300px"
-                          class="fw7"
+                  <div style="height: 100%">
+                    <div class="df aic jcsb mt20 mb20">
+                      <div class="df aic" style="height: 42px">
+                        <el-form
+                          :inline="true"
+                          :model="formInline"
+                          class="demo-form-inline"
+                          style="width: 60px"
                         >
-                          <el-input v-model="searchForm.search" />
-                        </el-form-item>
-                      </el-form>
+                          <el-form-item>
+                            <el-select v-model="formInline.num">
+                              <el-option label="10" value="10" />
+                              <el-option label="20" value="20" />
+                              <el-option label="50" value="50" />
+                              <el-option label="100" value="100" />
+                              <el-option label="500" value="500" />
+                            </el-select>
+                          </el-form-item>
+                        </el-form>
+                        <span style="margin-left: 13px">transaction</span>
+                      </div>
+                      <div>
+                        <el-form
+                          :inline="true"
+                          :model="searchForm"
+                          class="demo-form-inline"
+                        >
+                          <el-form-item
+                            label="Search :"
+                            style="width: 300px"
+                            class="fw7"
+                          >
+                            <el-input v-model="searchForm.search" />
+                          </el-form-item>
+                        </el-form>
+                      </div>
                     </div>
-                  </div>
-                  <table class="fw5">
-                    <thead
-                      class="b1"
-                      style="
-                        background: #eef5f9;
-                        height: 40px;
-                        text-indent: 10px;
-                      "
-                    >
-                      <tr>
-                        <td style="width: 220px">TxHash</td>
-                        <td style="width: 65px">Block</td>
-                        <td style="width: 165px">
-                          <span style="margin-left: 40px">From</span>
-                        </td>
-                        <td style="width: 165px">
-                          <span style="margin-left: 40px">To</span>
-                        </td>
-                        <td style="width: 65px">CHER</td>
-                        <td class="tac" style="width: 165px">Age</td>
-                        <td class="b1"></td>
-                      </tr>
-                    </thead>
-                    <tbody class="fz14" style="text-indent: 3px">
-                      <tr v-for="(v, i) in tableData.value" :key="i">
-                        <td class="b3">
-                          <span class="elli22" @click="goTransaction(v)">
-                            {{ v[0] }}
-                          </span>
-                        </td>
-                        <td class="b3 tac" style="width: 65px">{{ v[1] }}</td>
-                        <td class="b1" style="width: 165px">
-                          <span class="elli22" style="margin-left: 40px">{{
-                            v[2]
-                          }}</span>
-                        </td>
-                        <td class="b3" style="width: 165px">
-                          <span class="elli22" style="margin-left: 40px">{{
-                            v[3]
-                          }}</span>
-                        </td>
-                        <td class="b1 tac" style="width: 65px">{{ v[4] }}</td>
-                        <td class="b1" style="width: 165px; text-align: right">
-                          {{ deltaT(v[6] * 1000) }}
-                        </td>
-                        <td class="b1"></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div class="df aic jcsb mt10">
-                    <p class="fw7 b1 fz14">Showing 1 to 1 of 1entries</p>
-                    <el-pagination
-                      background
-                      layout="prev, pager, next"
-                      :total="10"
-                    />
+                    <div style="width: 100%">
+                      <table class="fw5">
+                        <thead
+                          class="b1"
+                          style="
+                            background: #eef5f9;
+                            height: 40px;
+                            text-indent: 10px;
+                          "
+                        >
+                          <tr>
+                            <td style="width: 220px">TxHash</td>
+                            <td style="width: 65px">Block</td>
+                            <td style="width: 165px">
+                              <span style="margin-left: 40px">From</span>
+                            </td>
+                            <td style="width: 165px">
+                              <span style="margin-left: 40px">To</span>
+                            </td>
+                            <td style="width: 65px">{{ fromDetail.symbol }}</td>
+                            <td class="tac" style="width: 165px">Age</td>
+                            <td class="b1"></td>
+                          </tr>
+                        </thead>
+                        <tbody class="fz14" style="text-indent: 3px">
+                          <tr v-for="(v, i) in tableData.value" :key="i">
+                            <td class="b3">
+                              <span class="elli22" @click="goTransaction(v)">
+                                {{ v[0] }}
+                              </span>
+                            </td>
+                            <td class="b3 tac" style="width: 65px">
+                              {{ v[1] }}
+                            </td>
+                            <td class="b1" style="width: 165px">
+                              <span class="elli22" style="margin-left: 40px">{{
+                                v[2]
+                              }}</span>
+                            </td>
+                            <td class="b3" style="width: 165px">
+                              <span class="elli22" style="margin-left: 40px">{{
+                                v[3]
+                              }}</span>
+                            </td>
+                            <td class="b1 tac" style="width: 65px">
+                              {{ v[4] }}
+                            </td>
+                            <td
+                              class="b1"
+                              style="width: 165px; text-align: right"
+                            >
+                              {{ deltaT(v[6] * 1000) }}
+                            </td>
+                            <td class="b1"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="df aic jcsb mt10">
+                      <p class="fw7 b1 fz14">Showing 1 to 1 of 1entries</p>
+                      <el-pagination
+                        background
+                        layout="prev, pager, next"
+                        :total="10"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -153,7 +164,28 @@
         <el-tab-pane label="NFT" name="third" class="third fz14"></el-tab-pane>
       </el-tabs>
     </div>
-    <footer-bar class="mt60"></footer-bar>
+    <div class="footer mt60">
+      <div class="container shallow bsbb df">
+        <div class="df fdc mr-5">
+          <p class="mb20 fz18 fw7" style="color: #44b6ae">ABOUT</p>
+          <p style="color: #a2abb7" class="fz16 mb10">
+            This is an open source Blockchain Explorer.
+          </p>
+          <img
+            src="../../assets/images/powered-by-etcexplorer-w.png"
+            style="width: 157px; height: 51px"
+          />
+        </div>
+        <div class="df fdc">
+          <p class="mb20 fz18 fw7" style="color: #44b6ae">FOLLOW US ON</p>
+        </div>
+      </div>
+      <div class="deep mt40 df aic">
+        <div class="container" style="color: #a2abb7">
+          2019 © Ethereum Classic.
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -162,7 +194,7 @@ import { ref, reactive } from "vue";
 import { getAddr, getWebrelay, getContract } from "@/api/index";
 import { useRouter } from "vue-router";
 import { useRoute } from "vue-router";
-import footerBar from "../../components/footer/index.vue";
+// import footerBar from "../../components/footer/index.vue";
 const $router = useRouter();
 const $route = useRoute();
 const activeName = ref("first");
@@ -354,6 +386,23 @@ getFromDetail();
         }
       }
     }
+  }
+}
+.footer {
+  height: 240px;
+  width: 100%;
+  background: #48525e;
+  // position: absolute;
+  // bottom: -120px;
+  // left: 0;
+  .shallow {
+    height: 160px;
+    padding: 40px 0 30px 0;
+  }
+  .deep {
+    background: #3b434c;
+    width: 100%;
+    height: 80px;
   }
 }
 </style>

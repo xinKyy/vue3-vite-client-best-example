@@ -46,6 +46,10 @@ const routes = [
     component: () => import('@/views/vertifyContract/index.vue')
   },
   {
+    path: '/block',
+    component: () => import('@/views/block/index.vue')
+  },
+  {
     path: '/footer',
     component: () => import('@/components/footer/index.vue')
   },
