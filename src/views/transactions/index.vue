@@ -12,13 +12,13 @@
       </div>
     </div>
     <div class="change">
-      <el-tabs v-model="activeName" tabPosition="top" class="demo-tabs fz24">
-        <el-tab-pane
-          label="Home"
-          name="first"
-          class="first fz18 container"
-          @tab-click="goHome"
-        >
+      <el-tabs
+        v-model="activeName"
+        @tab-click="goHome"
+        tabPosition="top"
+        class="demo-tabs fz24"
+      >
+        <el-tab-pane label="Home" name="first" class="first fz18 container">
           <p class="fz30 mb40 mt40">
             Transaction
             <span class="fz16" style="color: #999">{{
@@ -119,11 +119,9 @@
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="Tokens" name="second" class="second"
-          >Tokens</el-tab-pane
-        >
+        <el-tab-pane label="Tokens" name="second" class="second"></el-tab-pane>
         <el-tab-pane label="NFT" name="third" class="third fz14">
-          <div class="content p10 bsbb mt40">
+          <!-- <div class="content p10 bsbb mt40">
             <div class="list df fdc">
               <div class="item p10 bsbb df jcsb">
                 <span style="color: #69a1b3">A1(B1)</span>
@@ -133,7 +131,7 @@
                 <span></span>
               </div>
             </div>
-          </div>
+          </div> -->
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -271,20 +269,20 @@ export default {
         }
       }
     }
-    .second {
-    }
-    .third {
-      .content {
-        .list {
-          .item {
-            border-top: 1px solid #ddd;
-            width: 80%;
-            height: 100px;
-            margin: 0 auto;
-          }
-        }
-      }
-    }
+    // .second {
+    // }
+    // .third {
+    //   .content {
+    //     .list {
+    //       .item {
+    //         border-top: 1px solid #ddd;
+    //         width: 80%;
+    //         height: 100px;
+    //         margin: 0 auto;
+    //       }
+    //     }
+    //   }
+    // }
   }
 }
 </style>
