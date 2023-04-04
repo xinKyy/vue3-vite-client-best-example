@@ -132,6 +132,7 @@
         <el-tab-pane label="NFT" name="third" class="third fz14"> </el-tab-pane>
       </el-tabs>
     </div>
+    <footer-bar class="mt60"></footer-bar>
   </div>
 </template>
 

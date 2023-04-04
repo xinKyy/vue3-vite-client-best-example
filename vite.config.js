@@ -21,6 +21,11 @@ export default defineConfig({
         target: 'http://154.92.110.252:9000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/req/, '')
+      },
+      '/red': {
+        target: 'http://154.92.110.252:5000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/red/, '')
       }
     }
   }
