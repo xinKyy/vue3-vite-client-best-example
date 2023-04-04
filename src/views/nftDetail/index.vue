@@ -1,7 +1,7 @@
 <template>
   <div class="home container">
     <div class="search df aic jcsb p20 bsbb">
-      <img src="../../assets/images/explorer-logo.png" style="width: 200px" />
+      <img src="../../assets/images/logo.jpg" style="width: 200px" />
       <div class="df">
         <el-input
           class="mr20"

@@ -1,7 +1,7 @@
 <template>
   <div class="to container">
     <div class="search df aic jcsb p20 bsbb container">
-      <img src="../../assets/images/explorer-logo.png" style="width: 200px" />
+      <img src="../../assets/images/logo.jpg" style="width: 200px" />
       <div class="df aic">
         <input
           style="width: 350px; height: 45px; text-indent: 16px"

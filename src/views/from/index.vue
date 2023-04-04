@@ -1,7 +1,7 @@
 <template>
   <div class="to">
     <div class="search df aic jcsb p20 bsbb container">
-      <img src="../../assets/images/explorer-logo.png" style="width: 200px" />
+      <img src="../../assets/images/logo.jpg" style="width: 200px" />
       <div class="df aic">
         <input
           style="width: 350px; height: 45px; text-indent: 16px"
@@ -32,9 +32,11 @@
                 <div class="df aic jcsb mt20">
                   <div class="df fdc">
                     <p class="b1 fz18">
-                      <span>{{ web3relay.balance }}</span> CHER
+                      <span>{{ balance }}</span> CHER
                     </p>
-                    <p class="b3 fw7 fz16">CHER Balance ?</p>
+                    <p class="b3 fw7 fz16">
+                      {{ fromDetail.tokenName }} Balance ?
+                    </p>
                   </div>
                 </div>
                 <div class="mt20 fz16">
@@ -147,8 +149,8 @@
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="Tokens" name="second" class="second"> </el-tab-pane>
-        <el-tab-pane label="NFT" name="third" class="third fz14"> </el-tab-pane>
+        <el-tab-pane label="Tokens" name="second" class="second"></el-tab-pane>
+        <el-tab-pane label="NFT" name="third" class="third fz14"></el-tab-pane>
       </el-tabs>
     </div>
     <footer-bar class="mt60"></footer-bar>
@@ -157,7 +159,7 @@
 
 <script setup>
 import { ref, reactive } from "vue";
-import { getAddr, getWebrelay } from "@/api/index";
+import { getAddr, getWebrelay, getContract } from "@/api/index";
 import { useRouter } from "vue-router";
 import { useRoute } from "vue-router";
 import footerBar from "../../components/footer/index.vue";
@@ -179,6 +181,7 @@ const web3relay = reactive({
   bytecode: "",
   isContract: "",
 });
+const balance = ref(null);
 const totalCount = ref(null);
 const getWeb = () => {
   getWebrelay({ addr: from, options: ["balance", "count", "bytecode"] }).then(
@@ -186,10 +189,11 @@ const getWeb = () => {
       web3relay.value = res.data;
       web3relay.balance = res.data.balance;
       web3relay.bytecode = res.data.bytecode;
+      balance.value = Number(res.data.balance).toFixed(3);
+      console.log(balance.value);
       web3relay.count = res.data.count;
       web3relay.isContract = res.data.isContract;
       totalCount.value = res.data.count;
-      console.log(totalCount.value, 111);
     }
   );
 };
@@ -251,6 +255,43 @@ const goTransaction = (n) => {
     },
   });
 };
+const fromDetail = reactive({
+  ERC: "",
+  abi: null,
+  address: "",
+  blockNumber: "",
+  byteCode: "",
+  compilerVersion: "",
+  contractName: "",
+  decimals: 0,
+  optimization: "",
+  owner: "",
+  sourceCode: "",
+  symbol: "",
+  tokenName: "",
+  totalSupply: null,
+  valid: false,
+});
+const getFromDetail = () => {
+  getContract({ action: "find", addr: from.value }).then((res) => {
+    fromDetail.value = res.data.result;
+    fromDetail.ERC = res.data.result.ERC;
+    fromDetail.abi = res.data.result.abi;
+    fromDetail.address = res.data.result.address;
+    fromDetail.byteCode = res.data.result.byteCode;
+    fromDetail.compilerVersion = res.data.result.compilerVersion;
+    fromDetail.contractName = res.data.result.contractName;
+    fromDetail.decimals = res.data.result.decimals;
+    fromDetail.optimization = res.data.result.optimization;
+    fromDetail.owner = res.data.result.owner;
+    fromDetail.sourceCode = res.data.result.sourceCode;
+    fromDetail.symbol = res.data.result.symbol;
+    fromDetail.tokenName = res.data.result.tokenName;
+    fromDetail.totalSupply = res.data.result.totalSupply;
+    fromDetail.valid = res.data.result.valid;
+  });
+};
+getFromDetail();
 </script>
 
 <style lang="scss" scoped>

@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="search df aic jcsb p10 bsbb container">
-      <img src="../../assets/images/explorer-logo.png" style="width: 200px" />
+      <img src="../../assets/images/logo.jpg" style="width: 200px" />
       <div class="df aic">
         <input
           style="width: 350px; height: 45px; text-indent: 16px"
@@ -26,27 +26,28 @@
           <p class="fz30 b1 mt20" style="margin-left: 50px">NFT</p>
           <div class="content p10 bsbb mt40 df fdc">
             <div class="list df fdc">
-              <div class="item p10 bsbb df jcsb">
-                <span class="b4">A1(B1)</span>
+              <div class="item p10 bsbb df">
+                <span class="b4" style="margin-right: 100px">A1(B1)</span>
                 <span
                   class="hover"
                   style="color: #33a6dc"
                   @click="goNftDetail"
                   >{{ nft }}</span
                 >
-                <span></span>
               </div>
             </div>
           </div>
         </el-tab-pane>
       </el-tabs>
     </div>
+    <footer-bar class="mt60"></footer-bar>
   </div>
 </template>
 
 <script>
 import NFT from "@/common/nft.json";
 import { getBlock, getTransation } from "@/api/index";
+import footerBar from "../../components/footer/index.vue";
 export default {
   data() {
     return {
@@ -56,6 +57,9 @@ export default {
       transactionArr: [],
       nft: NFT[0].address,
     };
+  },
+  components: {
+    footerBar,
   },
   methods: {
     getBlockData() {
@@ -146,7 +150,6 @@ export default {
     }
   }
   .change {
-
     .third {
       .content {
         .list {

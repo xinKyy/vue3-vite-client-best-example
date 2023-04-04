@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="search df aic jcsb p10 bsbb container">
-      <img src="../../assets/images/explorer-logo.png" style="width: 200px" />
+      <img src="../../assets/images/logo.jpg" style="width: 200px" />
       <div class="df aic">
         <input
           style="width: 350px; height: 45px; text-indent: 16px"
@@ -25,15 +25,15 @@
           <p class="fz30 b1 mt20 fw7" style="margin-left: 50px">Tokens</p>
           <div class="content p10 bsbb mt40 df fdc">
             <div class="list df fdc">
-              <div class="item p10 bsbb df jcsb">
-                <span class="b4">AA(BB)</span>
+              <div class="item p10 bsbb df">
+                <span class="b4" style="margin-right: 100px">AA(BB)</span>
                 <span
                   class="hover"
                   style="color: #33a6dc"
                   @click="goTokenDetail"
                   >{{ tokens }}</span
                 >
-                <span></span>
+                <!-- <span></span> -->
               </div>
             </div>
           </div>
@@ -41,11 +41,13 @@
         <el-tab-pane label="NFT" name="third" class="third fz14"> </el-tab-pane>
       </el-tabs>
     </div>
+    <footer-bar class="mt60"></footer-bar>
   </div>
 </template>
 
 <script>
 import Token from "@/common/token.json";
+import footerBar from "../../components/footer/index.vue";
 export default {
   data() {
     return {
@@ -53,6 +55,9 @@ export default {
       activeName: "second",
       tokens: Token[0].address,
     };
+  },
+  components: {
+    footerBar,
   },
   methods: {
     goTokenDetail() {

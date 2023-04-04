@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="search df aic jcsb p10 bsbb container">
-      <img src="../../assets/images/explorer-logo.png" style="width: 200px" />
+      <img src="../../assets/images/logo.jpg" style="width: 200px" />
       <div class="df aic">
         <input
           style="width: 350px; height: 45px; text-indent: 16px"
@@ -13,7 +13,7 @@
         <el-icon size="26"><Search /></el-icon>
       </div>
     </div>
-    <div class="change">
+    <div class="change mb40">
       <el-tabs
         @tab-click="goHome"
         v-model="activeName"
@@ -132,7 +132,7 @@
         <el-tab-pane label="NFT" name="third" class="third fz14"> </el-tab-pane>
       </el-tabs>
     </div>
-    <footer-bar class="mt60"></footer-bar>
+    <footer-bar></footer-bar>
   </div>
 </template>
 
@@ -246,25 +246,19 @@ export default {
     // 发送合约
     async send() {
       let web3 = window.ethereum && new Web3(window.ethereum);
-      // const web3 = new Web3("http://3.20.206.120:9650/ext/bc/C/rpc");
       const contractAbi = JSON.parse(
         '[{"inputs": [],"name": "retrieve","outputs": [{"internalType": "uint256","name": "","type": "uint256"}],"stateMutability": "view","type": "function"},{"inputs": [{"internalType": "uint256","name": "num","type": "uint256"}],"name": "store","outputs": [],"stateMutability": "nonpayable","type":"function"}]'
       );
       const contractAddress = "0x6e65a1e833698f00573b9106427596c8bb349cb2";
       const myContract = new web3.eth.Contract(contractAbi, contractAddress);
-
-      myContract.methods
-        .store(1)
-        .send(
-          { from: "0x7B6191C29ad7e732a36806D33FF28803091C056b" },
-          function () {
-            if (window.ethereum) {
-              window.ethereum.enable().then((res) => {});
-            } else {
-              alert("请安装MetaMask钱包");
-            }
-          }
-        );
+      let fromAddress = await web3.eth.getAccounts();
+      myContract.methods.store(1).send({ from: fromAddress[0] }, function () {
+        if (window.ethereum) {
+          window.ethereum.enable().then((res) => {});
+        } else {
+          alert("请安装MetaMask钱包");
+        }
+      });
     },
     //查询代币余额
     async getToken() {

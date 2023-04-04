@@ -31,6 +31,9 @@
   height: 240px;
   width: 100%;
   background: #48525e;
+  position: absolute;
+  bottom: -120px;
+  left: 0;
   .shallow {
     height: 160px;
     padding: 40px 0 30px 0;
