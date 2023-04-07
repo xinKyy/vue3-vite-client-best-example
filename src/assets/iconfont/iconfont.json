@@ -1,0 +1,30 @@
+{
+  "id": "4001391",
+  "name": "mask",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "4916773",
+      "name": "07.Wallet",
+      "font_class": "Wallet",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "10147111",
+      "name": "home",
+      "font_class": "home",
+      "unicode": "e617",
+      "unicode_decimal": 58903
+    },
+    {
+      "icon_id": "29371879",
+      "name": "outline-ftx-token-(ftt)",
+      "font_class": "token",
+      "unicode": "e701",
+      "unicode_decimal": 59137
+    }
+  ]
+}

@@ -1,293 +1,420 @@
 <template>
-  <div class="home container">
-    <div class="search df aic jcsb p20 bsbb">
-      <img src="../../assets/images/logo.jpg" style="width: 200px" />
-      <div class="df">
-        <el-input
-          class="mr20"
-          v-model="input"
-          placeholder="Search by Address/Txhash/BlockNum/BlockHash"
-        />
-        <el-button>搜索</el-button>
+  <div class="nftDetail">
+    <search-for></search-for>
+    <div class="btns df aic container">
+      <div class="btn df aic jcc mr20" id="one" @click="$router.push('/Home')">
+        <span class="iconfont icon-home fz28 mr10"></span>
+        <span class="fz18 fw7">HOME</span>
+      </div>
+      <div class="btn df aic jcc mr20" @click="$router.push('/token')">
+        <span class="iconfont icon-token fz28 mr10"></span>
+        <span class="fz18 fw7">TOKENS</span>
+      </div>
+      <div class="btn df aic jcc mr20 active" @click="$router.push('/nft')">
+        <span class="iconfont icon-Wallet fz28 mr10"></span>
+        <span class="fz18 fw7">NFT</span>
       </div>
     </div>
-    <div class="change">
-      <el-tabs
-        v-model="activeName"
-        tabPosition="top"
-        class="demo-tabs fz24"
-        @tab-click="goHome"
-      >
-        <el-tab-pane label="Home" name="first" class="first"> </el-tab-pane>
-        <el-tab-pane label="Tokens" name="second" class="second"> </el-tab-pane>
-        <el-tab-pane label="NFT" name="third" class="third fz14">
-          <div class="topData fz16 df fdc mt20">
-            <p class="mb60">
-              <span class="fz24 mr10" style="color: #666">NFT</span>
-              <span class="fz18" style="color: #999">{{ nft }}</span>
-            </p>
+    <div class="contents container mt60 mb60">
+      <div class="item"></div>
+      <div class="item"></div>
+      <div class="on item third">
+        <div class="topData fz16 df fdc mt20">
+          <p class="mb60">
+            <span class="fz30 mr10 fw7">NFT</span>
+            <span class="fz18" style="color: #666">{{ nft }}</span>
+          </p>
+        </div>
+        <div class="change mt40">
+          <div class="title df aic fz20 fw7">
+            <p class="active">Transfer</p>
+            <p>Get Balance</p>
+            <p>Contract Transactions</p>
+            <p>Contract Source</p>
           </div>
-          <div class="change mt60">
-            <div class="title df aic fz20 fw7">
-              <p class="active">Transfer</p>
-              <p>Get Balance</p>
-              <p>Contract Transactions</p>
-              <p>Contract Source</p>
+          <div class="contentss">
+            <div class="on transfer">
+              <p class="mt30 fz28">Transfer Token</p>
+              <p class="fw7 mt20 fz26">Enter Your Address</p>
+              <div class="posi df fdc fz20 fw7 mt20">
+                <div class="df aic">
+                  <span
+                    class="mr10"
+                    style="padding-top: 10px; display: inline-block"
+                    >Address</span
+                  >
+                  <el-input
+                    class="mt20 ipt1"
+                    v-model="input2"
+                    label="address"
+                    :placeholder="nft"
+                  >
+                  </el-input>
+                </div>
+                <div class="df aic">
+                  <span
+                    class="mr10"
+                    style="
+                      padding-top: 10px;
+                      display: inline-block;
+                      margin-right: 15px;
+                    "
+                    >TokenId</span
+                  >
+                  <el-form>
+                    <el-form-item>
+                      <el-select
+                        v-model="tokenId"
+                        placeholder="please select your tokenId"
+                      >
+                        <el-option
+                          v-for="(v, i) in tokenidArr"
+                          :key="i"
+                          :label="v"
+                          :value="v"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-form>
+                </div>
+                <button class="mt40" @click="getTransfer">Go!</button>
+              </div>
             </div>
-            <div class="contents">
-              <div class="on transfer">
-                <p class="mt30 fz28" style="color: #666">Transfer Token</p>
-                <p class="fw7 mt20 fz26" style="color: #666">
-                  Enter Your Address
+            <div class="balance">
+              <p class="mt30 fz28" style="color: #666">Get Token Balance</p>
+              <p class="fw7 mt20 fz28" style="color: #666">
+                Enter Your Address
+              </p>
+              <div class="posi">
+                <el-input class="mt20 ipt1" v-model="input1"> </el-input>
+                <button @click="getBalance">Go!</button>
+                <p id="tokens" class="fz24 mt40" style="color: #666">
+                  You have
+                  <span>{{ tokens }}</span>
+                  tokens
                 </p>
-                <div class="posi df fdc fz20 fw7 mt20">
-                  <div class="df aic">
-                    <span
-                      class="mr10 b1"
-                      style="padding-top: 10px; display: inline-block"
-                      >Address</span
-                    >
-                    <!-- @blur="getTokenId" -->
-                    <el-input
-                      class="mt20 ipt1"
-                      v-model="input2"
-                      label="address"
-                      placeholder="0xf9f412bAdd9b4451670bdC605f5e4eaACcefbccE"
-                    >
-                    </el-input>
-                  </div>
-                  <div class="df aic">
-                    <span
-                      class="mr10 b1"
-                      style="padding-top: 10px; display: inline-block"
-                      >TokenId</span
-                    >
-                    <el-form>
-                      <el-form-item>
-                        <el-select
-                          v-model="tokenId"
-                          placeholder="please select your tokenId"
-                        >
-                          <el-option
-                            v-for="(v, i) in tokenidArr"
-                            :key="i"
-                            :label="v"
-                            :value="v"
-                          />
-                        </el-select>
-                      </el-form-item>
-                    </el-form>
-                    <!-- <el-input
-                      class="mt20 ipt2"
-                      v-model="input3"
-                      placeholder="please input amount"
-                    >
-                    </el-input> -->
-                  </div>
-                  <button class="mt20" @click="getTransfer">Go!</button>
-                </div>
               </div>
-              <div class="balance">
-                <p class="mt30 fz28" style="color: #666">Get Token Balance</p>
-                <p class="fw7 mt20 fz28" style="color: #666">
-                  Enter Your Address
-                </p>
-                <div class="posi">
-                  <el-input class="mt20 ipt1" v-model="input1"> </el-input>
-                  <button @click="getBalance">Go!</button>
-                  <p id="tokens" class="fz24 mt40" style="color: #666">
-                    You have
-                    <span class="b2">{{ tokens }}</span>
-                    tokens
-                  </p>
-                </div>
-              </div>
-              <div class="trans mt30">
-                <table class="fw5">
-                  <thead
-                    class="b1 fz20"
-                    style="height: 40px; text-indent: 10px"
-                  >
-                    <tr>
-                      <td style="width: 220px">TxHash</td>
-                      <td style="width: 65px">Block</td>
-                      <td style="width: 165px">
-                        <span style="margin-left: 40px">From</span>
-                      </td>
-                      <td style="width: 165px">
-                        <span style="margin-left: 40px">To</span>
-                      </td>
-                      <td style="width: 105px">CHER</td>
-                      <td style="width: 165px">gas</td>
-                      <td class="tac" style="width: 165px">Age</td>
-                    </tr>
-                  </thead>
-                </table>
-              </div>
-              <div class="source fz18">
-                <p class="b1 mt20">Contract Source Code Unverified</p>
-                <p class="b3 hover mt10" @click="goVertify">
-                  Verify And Publish Source Code.
-                </p>
-                <div class="row">
-                  <p class="mt40 mb10">Contract Bytecode</p>
-                  <textarea
-                    class="fz16"
-                    style="background: #f5f5f5"
-                    name="code"
-                    id="1"
-                    cols="160"
-                    rows="10"
-                  >
-                  </textarea>
-                </div>
+            </div>
+            <div class="trans mt30">
+              <table class="fw5">
+                <thead class="fz20" style="height: 40px; text-indent: 10px">
+                  <tr>
+                    <td style="width: 220px">TxHash</td>
+                    <td style="width: 65px">Block</td>
+                    <td style="width: 165px">
+                      <span style="margin-left: 40px">From</span>
+                    </td>
+                    <td style="width: 165px">
+                      <span style="margin-left: 40px">To</span>
+                    </td>
+                    <td style="width: 105px">{{ symbol }}</td>
+                    <td style="width: 165px">gas</td>
+                    <td class="tac" style="width: 165px">Age</td>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <div class="source fz18">
+              <p class="mt20">Contract Source Code Unverified</p>
+              <p class="hover mt10">
+                <!-- @click="goVertify" -->
+                Verify And Publish Source Code.
+              </p>
+              <div class="row">
+                <p class="mt40 mb10">Contract Bytecode</p>
+                <div class="text p10 bsbb"></div>
+                <!-- <textarea
+                  class="fz16"
+                  style="background: #f5f5f5"
+                  name="code"
+                  id="1"
+                  cols="160"
+                  rows="10"
+                >
+                </textarea> -->
               </div>
             </div>
           </div>
-        </el-tab-pane>
-      </el-tabs>
+        </div>
+      </div>
     </div>
+    <footer-bar></footer-bar>
   </div>
 </template>
 
-<script>
+<script setup>
 import Web3 from "web3";
 import NFT from "@/common/nft.json";
-import { getTransation, getAddr, getContract } from "@/api/index";
-export default {
-  data() {
-    return {
-      input: "",
-      input1: "", //balance
-      input2: "", //transfer
-      input3: "", //transfer
-      activeName: "third",
-      tokens: null,
-      token: null,
-      nft: this.$route.query.nft,
-      addrHash: "",
-      detailData: [],
-      contractData: "",
-      abi: "",
-      vertify: "",
-      nftAbi: NFT[0].abi,
-      transactionArr: [],
-      tokenidArr: [],
-      tokenId: "",
-    };
-  },
-  methods: {
-    goDetail(n) {
-      this.$router.push({
-        path: "/transactions",
-        query: {
-          blockNumber: n.blockNumber,
-        },
-      });
-    },
-    goVertify() {
-      this.$router.push({
-        path: "/vertifyContract",
-        query: {
-          vertify: this.nft,
-        },
-      });
-    },
-    goHome(pane) {
-      if (pane.props.label == "Home") {
-        this.$router.push("/Home");
-      } else if (pane.props.label == "Tokens") {
-        this.$router.push("/token");
-      } else if (pane.props.label == "NFT") {
-        this.$router.push("/nft");
-      }
-    },
-    async getBalance() {
-      let web3 = window.ethereum && new Web3(window.ethereum);
-      const contractAbi = NFT[0].abi;
-      const contractAddress = NFT[0].address;
-      const myContract = new web3.eth.Contract(contractAbi, contractAddress);
-      myContract.methods
-        .balanceOf(this.input1)
-        .call()
-        .then((res) => {
-          this.tokens = res;
-          this.showTokens();
-        });
-    },
-    async getTokenId() {
-      let web3 = window.ethereum && new Web3(window.ethereum);
-      const contractAbi = NFT[0].abi;
-      const contractAddress = NFT[0].address;
-      const myContract = new web3.eth.Contract(contractAbi, contractAddress); //所有代币的abi可以通用（abi,合约地址）
-      let fromAddress = await web3.eth.getAccounts();
-      let account = fromAddress[0];
-      myContract.methods
-        .balanceOf(account)
-        .call()
-        .then((res) => {
-          this.token = res;
-          for (var i = 0; i < this.token; i++) {
-            myContract.methods
-              .tokenOfOwnerByIndex(fromAddress[0], i)
-              .call()
-              .then((res) => {
-                this.tokenidArr.push(res);
-              });
-          }
-        });
-    },
-    //ETH转账
-    async getTransfer() {
-      let web3 = window.ethereum && new Web3(window.ethereum);
-      const contractAbi = NFT[0].abi;
-      const contractAddress = NFT[0].address;
-      const myContract = new web3.eth.Contract(contractAbi, contractAddress);
-      let fromAddress = await web3.eth.getAccounts();
-      myContract.methods
-        .transferFrom(fromAddress[0], this.input2, this.tokenId)
-        .send({ from: fromAddress[0] })
-        .then((r) => {
-          this.transactionArr.push(r);
-        });
-    },
-    showTokens() {
-      const tokens = document.querySelector("#tokens");
-      if (this.tokens != null) {
-        tokens.classList.add("on");
-      }
-    },
-    // getAccount() {
-    //   let web3 = window.ethereum && new Web3(window.ethereum);
-    //   console.log(web3.eth.accounts.create(web3.utils.randomHex(32)));
-    // },
-  },
-  created() {
-    this.getTokenId();
-  },
-  async mounted() {
-    const titles = document.querySelectorAll(".title>p");
-    const contents = document.querySelectorAll(".contents>div");
-    titles.forEach((p, i) => {
-      p.addEventListener("click", () => {
-        titles.forEach((value, index) => {
-          value.classList.remove("active");
-          contents[index].classList.remove("on");
-        });
-        p.classList.add("active");
-        contents[i].classList.add("on");
-      });
-    });
+import footerBar from "../../components/footer/index.vue";
+import searchFor from "../../components/search/index.vue";
+import { getContract } from "@/api/index";
+import { onMounted, reactive, ref } from "vue";
 
-    getContract({
-      addr: this.addr,
-      action: "find",
-    }).then((res) => {
-      this.contractData = res.data.result;
-      this.abi = JSON.stringify(res.data.result.abi);
-    });
-  },
+import { useRouter } from "vue-router";
+import { useRoute } from "vue-router";
+const $router = useRouter();
+const $route = useRoute();
+const input1 = ref("");
+const input2 = ref("");
+const symbol = ref(localStorage.getItem("symbol"));
+const tokens = ref(null);
+const token = ref(null);
+const nft = $route.query.nft;
+const addr = NFT[0].address;
+const contractData = ref("");
+const abi = ref("");
+const transactionArr = reactive([]);
+const tokenidArr = reactive([]);
+const tokenId = ref("");
+
+const goVertify = () => {
+  $router.push({
+    path: "/vertifyContract",
+    query: {
+      vertify: nft,
+    },
+  });
 };
+const goHome = (pane) => {
+  if (pane.props.label == "Home") {
+    $router.push("/Home");
+  } else if (pane.props.label == "Tokens") {
+    $router.push("/token");
+  } else if (pane.props.label == "NFT") {
+    $router.push("/nft");
+  }
+};
+const showTokens = () => {
+  const tokens1 = document.querySelector("#tokens");
+  if (tokens.value != null) {
+    tokens1.classList.add("on");
+  }
+};
+const getBalance = async () => {
+  let web3 = window.ethereum && new Web3(window.ethereum);
+  const contractAbi = NFT[0].abi;
+  const contractAddress = NFT[0].address;
+  const myContract = new web3.eth.Contract(contractAbi, contractAddress);
+  await myContract.methods
+    .balanceOf(input1.value)
+    .call()
+    .then((res) => {
+      tokens.value = res;
+      console.log(tokens.value);
+      showTokens();
+    });
+};
+
+const getTokenId = () => {
+  let web3 = window.ethereum && new Web3(window.ethereum);
+  const contractAbi = NFT[0].abi;
+  const contractAddress = NFT[0].address;
+  const myContract = new web3.eth.Contract(contractAbi, contractAddress);
+  web3.eth.getAccounts().then((res) => {
+    let account = res[0];
+    myContract.methods
+      .balanceOf(account)
+      .call()
+      .then((res) => {
+        token.value = res;
+        for (var i = 0; i < token.value; i++) {
+          myContract.methods
+            .tokenOfOwnerByIndex(account, i)
+            .call()
+            .then((res) => {
+              tokenidArr.push(res);
+            });
+        }
+      });
+  });
+};
+getTokenId();
+// ETH转账;
+const getTransfer = () => {
+  let web3 = window.ethereum && new Web3(window.ethereum);
+  const contractAbi = NFT[0].abi;
+  const contractAddress = NFT[0].address;
+  const myContract = new web3.eth.Contract(contractAbi, contractAddress);
+  let fromAddress = web3.eth.getAccounts();
+  myContract.methods
+    .transferFrom(fromAddress[0], input2.value, tokenId.value)
+    .send({ from: fromAddress[0] })
+    .then((r) => {
+      transactionArr.value.push(r);
+    });
+};
+onMounted(() => {
+  const titles = document.querySelectorAll(".title>p");
+  const contentss = document.querySelectorAll(".contentss>div");
+  titles.forEach((p, i) => {
+    p.addEventListener("click", () => {
+      titles.forEach((value, index) => {
+        value.classList.remove("active");
+        contentss[index].classList.remove("on");
+      });
+      p.classList.add("active");
+      contentss[i].classList.add("on");
+    });
+  });
+
+  getContract({
+    addr: addr,
+    action: "find",
+  }).then((res) => {
+    contractData.value = res.data.result;
+    abi.value = JSON.stringify(res.data.result.abi);
+  });
+
+  const btns = document.querySelectorAll(".btns >.btn");
+  const contents = document.querySelectorAll(".contents >.item");
+  btns.forEach((btn, ind) => {
+    btn.addEventListener("click", () => {
+      btns.forEach((value, index) => {
+        value.classList.remove("active");
+        contents[index].classList.remove("on");
+      });
+      btn.classList.add("active");
+      contents[ind].classList.add("on");
+    });
+  });
+});
+// export default {
+//   data() {
+//     return {
+//       input1: "", //balance
+//       input2: "", //transfer
+//       input3: "", //transfer
+//       activeName: "third",
+//       tokens: null,
+//       token: null,
+//       nft: this.$route.query.nft,
+//       addrHash: "",
+//       detailData: [],
+//       contractData: "",
+//       abi: "",
+//       vertify: "",
+//       nftAbi: NFT[0].abi,
+//       transactionArr: [],
+//       tokenidArr: [],
+//       tokenId: "",
+//     };
+//   },
+//   components: {
+//     searchFor,
+//     footerBar,
+//   },
+
+//   methods: {
+//     goDetail(n) {
+//       this.$router.push({
+//         path: "/transactions",
+//         query: {
+//           blockNumber: n.blockNumber,
+//         },
+//       });
+//     },
+//     goVertify() {
+//       this.$router.push({
+//         path: "/vertifyContract",
+//         query: {
+//           vertify: this.nft,
+//         },
+//       });
+//     },
+//     goHome(pane) {
+//       if (pane.props.label == "Home") {
+//         this.$router.push("/Home");
+//       } else if (pane.props.label == "Tokens") {
+//         this.$router.push("/token");
+//       } else if (pane.props.label == "NFT") {
+//         this.$router.push("/nft");
+//       }
+//     },
+//     async getBalance() {
+//       let web3 = window.ethereum && new Web3(window.ethereum);
+//       const contractAbi = NFT[0].abi;
+//       const contractAddress = NFT[0].address;
+//       const myContract = new web3.eth.Contract(contractAbi, contractAddress);
+//       myContract.methods
+//         .balanceOf(this.input1)
+//         .call()
+//         .then((res) => {
+//           this.tokens = res;
+//           this.showTokens();
+//         });
+//     },
+//     async getTokenId() {
+//       let web3 = window.ethereum && new Web3(window.ethereum);
+//       const contractAbi = NFT[0].abi;
+//       const contractAddress = NFT[0].address;
+//       const myContract = new web3.eth.Contract(contractAbi, contractAddress); //所有代币的abi可以通用（abi,合约地址）
+//       let fromAddress = await web3.eth.getAccounts();
+//       let account = fromAddress[0];
+//       myContract.methods
+//         .balanceOf(account)
+//         .call()
+//         .then((res) => {
+//           this.token = res;
+//           for (var i = 0; i < this.token; i++) {
+//             myContract.methods
+//               .tokenOfOwnerByIndex(fromAddress[0], i)
+//               .call()
+//               .then((res) => {
+//                 this.tokenidArr.push(res);
+//               });
+//           }
+//         });
+//     },
+//     //ETH转账
+//     async getTransfer() {
+//       let web3 = window.ethereum && new Web3(window.ethereum);
+//       const contractAbi = NFT[0].abi;
+//       const contractAddress = NFT[0].address;
+//       const myContract = new web3.eth.Contract(contractAbi, contractAddress);
+//       let fromAddress = await web3.eth.getAccounts();
+//       myContract.methods
+//         .transferFrom(fromAddress[0], this.input2, this.tokenId)
+//         .send({ from: fromAddress[0] })
+//         .then((r) => {
+//           this.transactionArr.push(r);
+//         });
+//     },
+//     showTokens() {
+//       const tokens = document.querySelector("#tokens");
+//       if (this.tokens != null) {
+//         tokens.classList.add("on");
+//       }
+//     },
+//     // getAccount() {
+//     //   let web3 = window.ethereum && new Web3(window.ethereum);
+//     //   console.log(web3.eth.accounts.create(web3.utils.randomHex(32)));
+//     // },
+//   },
+//   created() {
+//     this.getTokenId();
+//   },
+//   async mounted() {
+//     const titles = document.querySelectorAll(".title>p");
+//     const contents = document.querySelectorAll(".contents>div");
+//     titles.forEach((p, i) => {
+//       p.addEventListener("click", () => {
+//         titles.forEach((value, index) => {
+//           value.classList.remove("active");
+//           contents[index].classList.remove("on");
+//         });
+//         p.classList.add("active");
+//         contents[i].classList.add("on");
+//       });
+//     });
+
+//     getContract({
+//       addr: this.addr,
+//       action: "find",
+//     }).then((res) => {
+//       this.contractData = res.data.result;
+//       this.abi = JSON.stringify(res.data.result.abi);
+//     });
+//   },
 </script>
 
 <style lang="scss" scoped>
@@ -303,6 +430,7 @@ export default {
 ::v-deep .el-tabs__nav-scroll {
   margin-top: 30px;
   float: right;
+  margin-right: 20%;
   font-size: 24px !important;
 }
 ::v-deep .el-tabs__item {
@@ -318,22 +446,35 @@ export default {
   margin-top: 20px;
   height: 40px;
 }
+::v-deep .el-input__wrapper {
+  padding: 5px 20px;
+  height: 74px;
+}
 .demo-tabs > .el-tabs__content {
   padding: 32px;
   color: #6b778c;
   font-size: 32px;
   font-weight: 600;
 }
-.home {
+.nftDetail {
   height: 100%;
-  .search {
-    text-align: right !important;
-    .el-input {
-      width: 400px;
+  font-family: "pingfang";
+  .btns {
+    > div {
+      width: 180px;
+      height: 57px;
+      border-radius: 29px;
+      background: #fff;
+      color: #02204e;
+      &.active {
+        background: #02204e;
+        color: #fff;
+      }
     }
   }
-  .change {
+  .contents {
     .third {
+      color: #02204e;
       .topData {
         .hover:hover {
           text-decoration: underline;
@@ -346,22 +487,21 @@ export default {
       }
       .change {
         .title {
-          border-bottom: 1px solid #ddd;
+          border-bottom: 1px solid #02204e;
           > p {
             padding: 20px;
             box-sizing: border-box;
             height: 60px;
-            color: #999;
             text-align: center;
             &.active {
-              border-bottom: 5px solid #36c6d3;
+              border-bottom: 5px solid #02204e;
             }
           }
           > p:hover {
-            border-bottom: 5px solid #9fe4ea;
+            border-bottom: 5px solid #2961b4;
           }
         }
-        .contents {
+        .contentss {
           > div {
             display: none;
             &.on {
@@ -375,16 +515,22 @@ export default {
             }
             .posi {
               position: relative;
+              width: 1200px;
               button {
                 position: absolute;
-                right: 20%;
+                right: 0%;
                 bottom: 0;
-                width: 100px;
-                height: 40px;
+                width: 130px;
+                height: 73px;
                 border: none;
-                background: #578ebe;
+                background: #02204e;
                 color: #fff;
                 font-size: 24px;
+              }
+              .el-input {
+                width: 1070px;
+                height: 73px;
+                background: #fff;
               }
             }
             #tokens {
@@ -401,13 +547,19 @@ export default {
               width: 80%;
             }
             .posi {
+              width: 1200px;
               button {
-                width: 100px;
-                height: 40px;
+                width: 130px;
+                height: 73px;
                 border: none;
-                background: #578ebe;
+                background: #02204e;
                 color: #fff;
                 font-size: 24px;
+              }
+              .el-input {
+                width: 1070px;
+                height: 73px;
+                background: #fff;
               }
             }
           }
@@ -415,6 +567,14 @@ export default {
             .hover:hover {
               text-decoration: underline;
               color: #666 !important;
+            }
+            .text {
+              width: 100%;
+              height: 240px;
+              overflow-y: scroll;
+              background: #e2e2e2;
+              border-radius: 12px;
+              word-wrap: break-word;
             }
           }
         }

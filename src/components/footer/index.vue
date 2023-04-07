@@ -30,7 +30,7 @@
 .footer {
   height: 240px;
   width: 100%;
-  background: #48525e;
+  background: #1c2437;
   position: absolute;
   bottom: -120px;
   left: 0;
@@ -39,7 +39,7 @@
     padding: 40px 0 30px 0;
   }
   .deep {
-    background: #3b434c;
+    background: #384053;
     width: 100%;
     height: 80px;
   }

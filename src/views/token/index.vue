@@ -1,85 +1,78 @@
 <template>
-  <div class="home">
-    <div class="search df aic jcsb p10 bsbb container">
-      <img src="../../assets/images/logo.jpg" style="width: 200px" />
-      <div class="df aic">
-        <input
-          style="width: 350px; height: 45px; text-indent: 16px"
-          type="text"
-          class="mr20"
-          v-model="input"
-          placeholder="Search by Address/Txhash/BlockNum/BlockHash"
-        />
-        <el-icon size="26"><Search /></el-icon>
+  <div class="token">
+    <search-for></search-for>
+    <div class="btns df aic container">
+      <div class="btn df aic jcc mr20" id="one" @click="$router.push('/Home')">
+        <span class="iconfont icon-home fz28 mr10"></span>
+        <span class="fz18 fw7">HOME</span>
+      </div>
+      <div class="btn df aic jcc mr20 active" @click="$router.push('/token')">
+        <span class="iconfont icon-token fz28 mr10"></span>
+        <span class="fz18 fw7">TOKENS</span>
+      </div>
+      <div class="btn df aic jcc mr20" @click="$router.push('/nft')">
+        <span class="iconfont icon-Wallet fz28 mr10"></span>
+        <span class="fz18 fw7">NFT</span>
       </div>
     </div>
-    <div class="change">
-      <el-tabs
-        v-model="activeName"
-        tabPosition="top"
-        class="demo-tabs fz24"
-        @tab-click="goHome"
-      >
-        <el-tab-pane label="Home" name="first" class="first"></el-tab-pane>
-        <el-tab-pane label="Tokens" name="second" class="second fz16 container">
-          <p class="fz30 b1 mt20 fw7" style="margin-left: 50px">Tokens</p>
-          <div class="content p10 bsbb mt40 df fdc">
-            <div class="list df fdc">
-              <div class="item p10 bsbb df">
-                <span class="b4" style="margin-right: 100px">AA(BB)</span>
-                <span
-                  class="hover"
-                  style="color: #33a6dc"
-                  @click="goTokenDetail"
-                  >{{ tokens }}</span
-                >
-                <!-- <span></span> -->
-              </div>
+    <div class="contents container mt60 mb60">
+      <div class="item"></div>
+      <div class="item on second">
+        <p class="fz30 mt20 fw7" style="margin-left: 50px; color: #02204e">
+          Tokens
+        </p>
+        <div class="content bsbb mt40 df fdc">
+          <div class="list df fdc">
+            <div class="item bsbb df aic fz24 fw7">
+              <span style="margin-right: 100px; color: #02204e">AA(BB)</span>
+              <span
+                class="hover"
+                style="color: #02204e"
+                @click="goTokenDetail"
+                >{{ tokens }}</span
+              >
             </div>
           </div>
-        </el-tab-pane>
-        <el-tab-pane label="NFT" name="third" class="third fz14"> </el-tab-pane>
-      </el-tabs>
+        </div>
+      </div>
+      <div class="item"></div>
     </div>
-    <footer-bar class="mt60"></footer-bar>
+    <footer-bar class="mt40"></footer-bar>
   </div>
 </template>
 
-<script>
+<script setup>
 import Token from "@/common/token.json";
+import { onMounted } from "vue";
 import footerBar from "../../components/footer/index.vue";
-export default {
-  data() {
-    return {
-      input: "",
-      activeName: "second",
-      tokens: Token[0].address,
-    };
-  },
-  components: {
-    footerBar,
-  },
-  methods: {
-    goTokenDetail() {
-      this.$router.push({
-        path: "/tokenDetail",
-        query: {
-          tokens: this.tokens,
-        },
-      });
+import searchFor from "../../components/search/index.vue";
+import { useRouter } from "vue-router";
+const $router = useRouter();
+
+const tokens = Token[0].address;
+
+const goTokenDetail = () => {
+  $router.push({
+    path: "/tokenDetail",
+    query: {
+      tokens: tokens,
     },
-    goHome(pane) {
-      if (pane.props.label == "Home") {
-        this.$router.push("/Home");
-      } else if (pane.props.label == "Tokens") {
-        this.$router.push("/token");
-      } else if (pane.props.label == "NFT") {
-        this.$router.push("/nft");
-      }
-    },
-  },
-  created() {},
+  });
 };
+onMounted(() => {
+  const btns = document.querySelectorAll(".btns >.btn");
+  const contents = document.querySelectorAll(".contents >.item");
+  btns.forEach((btn, ind) => {
+    btn.addEventListener("click", () => {
+      btns.forEach((value, index) => {
+        value.classList.remove("active");
+        contents[index].classList.remove("on");
+      });
+      btn.classList.add("active");
+      contents[ind].classList.add("on");
+    });
+  });
+});
 </script>
 
 <style lang="scss" scoped>
@@ -107,24 +100,34 @@ export default {
   font-size: 32px;
   font-weight: 600;
 }
-.home {
+.token {
   font-family: "pingfang";
   height: 100%;
-  .search {
-    text-align: right !important;
-    .el-input {
-      width: 400px;
+  .btns {
+    > div {
+      width: 180px;
+      height: 57px;
+      border-radius: 29px;
+      background: #fff;
+      color: #02204e;
+      &.active {
+        background: #02204e;
+        color: #fff;
+      }
     }
   }
-  .change {
+  .contents {
     .second {
       .content {
         .list {
           .item {
-            border-top: 1px solid #ddd;
-            width: 80%;
-            height: 100px;
             margin: 0 auto;
+            color: #02204e;
+            width: 1300px;
+            height: 118px;
+            background: #ffffff;
+            border-radius: 4px;
+            padding-left: 80px;
             .hover:hover {
               color: #666 !important;
               text-decoration: underline;

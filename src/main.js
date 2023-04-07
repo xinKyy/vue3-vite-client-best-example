@@ -10,7 +10,7 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 // element-plus图标库
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import '@/assets/font/font.css'
-
+import './assets/iconfont/iconfont.css'
 const app = createApp(App)
 
 app.use(router)

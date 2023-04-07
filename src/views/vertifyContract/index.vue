@@ -1,16 +1,6 @@
 <template>
-  <div class="home container">
-    <div class="search df aic jcsb p20 bsbb">
-      <img src="../../assets/images/logo.jpg" style="width: 200px" />
-      <div class="df">
-        <el-input
-          class="mr20"
-          v-model="input"
-          placeholder="Search by Address/Txhash/BlockNum/BlockHash"
-        />
-        <el-button>搜索</el-button>
-      </div>
-    </div>
+  <div class="vertify">
+    <search-for></search-for>
     <div class="change">
       <el-tabs
         v-model="activeName"
@@ -20,7 +10,7 @@
       >
         <el-tab-pane label="Home" name="first" class="first"></el-tab-pane>
         <el-tab-pane label="Tokens" name="second" class="second"> </el-tab-pane>
-        <el-tab-pane label="NFT" name="third" class="third fz14">
+        <el-tab-pane label="NFT" name="third" class="third fz14 container">
           <p class="mt20">
             <span class="fw7 b1 fz24">Vertify Contract</span>
             <span class="b1">&ensp;{{ nft }}</span>
@@ -72,40 +62,38 @@
         </el-tab-pane>
       </el-tabs>
     </div>
+    <footer-bar></footer-bar>
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      input: "",
-      activeName: "third",
-      nft: this.$route.query.vertify,
-      input3: "",
-      select: "",
-    };
-  },
-  methods: {
-    goTokenDetail() {
-      this.$router.push({
-        path: "/tokenDetail",
-        query: {
-          tokens: this.tokens,
-        },
-      });
-    },
-    goHome(pane) {
-      if (pane.props.label == "Home") {
-        this.$router.push("/Home");
-      } else if (pane.props.label == "Tokens") {
-        this.$router.push("/token");
-      } else if (pane.props.label == "NFT") {
-        this.$router.push("/nft");
-      }
-    },
-  },
-  created() {},
+<script setup>
+import searchFor from "../../components/search/index.vue";
+import footerBar from "../../components/footer/index.vue";
+import { useRouter } from "vue-router";
+import { useRoute } from "vue-router";
+import { ref } from "vue";
+const $router = useRouter();
+const $route = useRoute();
+const activeName = ref("third");
+const nft = $route.query.vertify;
+const input3 = ref("");
+const select = ref("");
+// const goTokenDetail = () => {
+//   $router.push({
+//     path: "/tokenDetail",
+//     query: {
+//       tokens: this.tokens,
+//     },
+//   });
+// };
+const goHome = (pane) => {
+  if (pane.props.label == "Home") {
+    $router.push("/Home");
+  } else if (pane.props.label == "Tokens") {
+    $router.push("/token");
+  } else if (pane.props.label == "NFT") {
+    $router.push("/nft");
+  }
 };
 </script>
 
@@ -122,6 +110,7 @@ export default {
 ::v-deep .el-tabs__nav-scroll {
   margin-top: 30px;
   float: right;
+  margin-right: 20%;
   font-size: 24px !important;
 }
 ::v-deep .el-tabs__item {
@@ -135,7 +124,7 @@ export default {
   font-size: 32px;
   font-weight: 600;
 }
-.home {
+.vertify {
   height: 100%;
   .search {
     text-align: right !important;

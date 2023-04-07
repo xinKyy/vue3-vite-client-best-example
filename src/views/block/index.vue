@@ -1,16 +1,6 @@
 <template>
   <div class="transactions">
-    <div class="search df aic jcsb p10 bsbb container">
-      <img src="../../assets/images/logo.jpg" style="width: 200px" />
-      <div class="df">
-        <el-input
-          class="mr20"
-          v-model="input"
-          placeholder="Search by Address/Txhash/BlockNum/BlockHash"
-        />
-        <el-button>搜索</el-button>
-      </div>
-    </div>
+    <search-for></search-for>
     <div class="change mb60">
       <el-tabs
         v-model="activeName"
@@ -22,83 +12,66 @@
           <p class="fz30 mb40 mt40">
             Block
             <span class="fz16" style="color: #999">{{
-              this.pickOne.blockTime
+              pickOne.blockTime
             }}</span>
           </p>
           <div class="detail df fdc">
             <div class="item bsbb df jcsb">
-              <p style="width: 300px">Block Height :</p>
-              <h4>{{ deltaT(pickOne.timestamp * 1000) }}</h4>
-              <p></p>
+              <p>Block Height :</p>
+              <h4>{{ one.number }}</h4>
             </div>
-            <!-- <div class="item bsbb df jcsb">
-              <p style="width: 300px">TimeStamp :</p>
-              <h4 :class="transactionArr.status == 1 ? 'green' : 'red'">
-                {{ this.stat }}
-              </h4>
-              <p></p>
-            </div> -->
             <div class="item bsbb df jcsb">
-              <p style="width: 300px">Hash :</p>
+              <p>TimeStamp :</p>
+              <h4>{{ deltaTS(one.timestamp * 1000) }} block confirmations</h4>
+            </div>
+            <div class="item bsbb df jcsb">
+              <p>Hash :</p>
+              <h4>{{ one.hash }}</h4>
+            </div>
+            <div class="item bsbb df jcsb">
+              <p>Parent Hash :</p>
               <h4>
-                <span class="b3 mr20">{{ pickOne.hash }}</span>
-                <span>-14 block confirmations</span>
+                {{ one.parentHash }}
               </h4>
-              <p></p>
             </div>
             <div class="item bsbb df jcsb">
-              <p style="width: 300px">Parent Hash :</p>
-              <h4>
-                {{ pickOne.parentHash }}
-              </h4>
-              <p></p>
-            </div>
-            <div class="item bsbb df jcsb">
-              <p style="width: 300px">Sha3Uncles :</p>
+              <p>Sha3Uncles :</p>
               <h4 class="b3">
-                {{ pickOne.sha3Uncles }}
+                {{ one.sha3Uncles }}
               </h4>
-              <p></p>
             </div>
             <div class="item bsbb df jcsb">
-              <p style="width: 300px">Mined by :</p>
-              <h4 class="b3">{{ pickOne.miner }}</h4>
-              <p></p>
+              <p>Mined by :</p>
+              <h4 class="b3">{{ one.miner }}</h4>
             </div>
             <div class="item bsbb df jcsb">
-              <p style="width: 300px">Difficulty :</p>
+              <p>Difficulty :</p>
               <h4>
-                <span> {{ pickOne.difficulty }}</span>
+                <span> {{ one.difficulty }}</span>
               </h4>
-              <p></p>
             </div>
             <div class="item bsbb df jcsb">
-              <p style="width: 300px">Total Difficulty :</p>
-              <h4>{{ pickOne.totalDifficulty }}</h4>
-              <p></p>
+              <p>Total Difficulty :</p>
+              <h4>{{ one.totalDifficulty }}</h4>
             </div>
             <div class="item bsbb df jcsb">
-              <p style="width: 300px">Gas Limit :</p>
-              <h4>{{ pickOne.gasLimit }}</h4>
-              <p></p>
+              <p>Gas Limit :</p>
+              <h4>{{ one.gasLimit }}</h4>
             </div>
             <div class="item bsbb df jcsb">
-              <p style="width: 300px">Gas Used :</p>
-              <h4>{{ pickOne.gasUsed }}</h4>
-              <p></p>
+              <p>Gas Used :</p>
+              <h4>{{ one.gasUsed }}</h4>
             </div>
             <div class="item bsbb df jcsb">
-              <p style="width: 300px">Gas Price:</p>
+              <p>Gas Price:</p>
               <h4>
-                <span>{{ pickOne.gasPriceEther }}</span> CHER (
-                <span>{{ pickOne.gasPriceGwei }}</span> Gwei)
+                <span>{{ one.gasPriceEther }}</span> {{ symbol }} (
+                <span>{{ one.gasPriceGwei }}</span> Gwei)
               </h4>
-              <p></p>
             </div>
             <div class="item bsbb df jcsb">
-              <p style="width: 300px">Nonce :</p>
-              <h4>{{ pickOne.nonce }}</h4>
-              <p></p>
+              <p>Nonce :</p>
+              <h4>{{ one.nonce }}</h4>
             </div>
             <div class="item bsbb df">
               <p style="width: 450px">Extra Data:</p>
@@ -112,8 +85,8 @@
                 name="code"
                 id="1"
                 cols="105"
-                rows="10"
-                v-model="pickOne.extraData"
+                rows="5"
+                v-model="one.extraData"
               ></textarea>
             </div>
           </div>
@@ -126,64 +99,106 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import footerBar from "../../components/footer/index.vue";
+import searchFor from "../../components/search/index.vue";
 import { getBlock } from "@/api/index";
-export default {
-  data() {
-    return {
-      input: "",
-      activeName: "first",
-      from: this.$route.query.from,
-      blockData: [],
-      pickOne: [],
-    };
-  },
-  components: {
-    footerBar,
-  },
-  methods: {
-    // 获取详情
-    deltaT(faultDat) {
-      var stime = Date.parse(new Date(faultDat));
-      var etime = Date.parse(new Date());
-      // 两个时间戳相差的毫秒数
-      var usedTime = etime - stime;
-      // 计算相差的天数
-      const days = Math.floor(usedTime / (24 * 3600 * 1000));
-      // 计算天数后剩余的毫秒数
-      var leave1 = usedTime % (24 * 3600 * 1000);
-      // 计算出小时数
-      const hours = Math.floor(leave1 / (3600 * 1000));
-      // 计算小时数后剩余的毫秒数
-      var leave2 = leave1 % (3600 * 1000);
-      // 计算相差分钟数
-      var minutes = Math.floor(leave2 / (60 * 1000));
-      var time = days + " " + "days" + "," + hours + " " + "hours ago";
-      return time;
-    },
-    goHome(pane) {
-      if (pane.props.label == "Home") {
-        this.$router.push("/Home");
-      } else if (pane.props.label == "Tokens") {
-        this.$router.push("/token");
-      } else if (pane.props.label == "NFT") {
-        this.$router.push("/nft");
-      }
-    },
-  },
-  created() {},
-  async mounted() {
-    getBlock().then(async (res) => {
-      this.blockData = res.data.result;
-      this.blockData.forEach((v) => {
-        if (v.hash == this.from) {
-          this.pickOne.push(v);
-        }
-      });
-    });
-  },
+import { onMounted, reactive, ref } from "vue";
+import { useRouter } from "vue-router";
+import { useRoute } from "vue-router";
+const $router = useRouter();
+const $route = useRoute();
+const activeName = ref("first");
+const from = $route.query.from;
+const blockData = reactive([]);
+const pickOne = reactive({});
+const one = reactive({
+  blockTime: "",
+  difficulty: "",
+  extraData: "",
+  gasLimit: "",
+  gasUsed: "",
+  hash: "",
+  logsBloom: "",
+  miner: "",
+  nonce: "",
+  number: "",
+  parentHash: "",
+  receiptRoot: "",
+  sha3Uncles: "",
+  size: "",
+  stateRoot: "",
+  timestamp: "",
+  totalDifficulty: "",
+  transactionsRoot: "",
+  txn: "",
+  uncles: [],
+});
+const symbol = ref(localStorage.getItem("symbol"));
+const deltaTS = (faultDat) => {
+  var stime = Date.parse(new Date(faultDat));
+  var etime = Date.parse(new Date());
+  // 两个时间戳相差的毫秒数
+  var usedTime = etime - stime;
+  // 计算相差的天数
+  const days = Math.floor(usedTime / (24 * 3600 * 1000));
+  // 计算天数后剩余的毫秒数
+  var leave1 = usedTime % (24 * 3600 * 1000);
+  // 计算出小时数
+  const hours = Math.floor(leave1 / (3600 * 1000));
+  // 计算小时数后剩余的毫秒数
+  var leave2 = leave1 % (3600 * 1000);
+  // 计算相差分钟数
+  var minutes = Math.floor(leave2 / (60 * 1000));
+  // 计算分钟数侯剩余毫秒数
+  var leave3 = leave2 % (3600 * 1000);
+  // 计算相差秒数
+  var second = Math.floor(leave3 / (60 * 1000));
+  var time = minutes + " " + "mins" + "," + second + " " + "seconds ago";
+  return time;
 };
+const goHome = (pane) => {
+  if (pane.props.label == "Home") {
+    $router.push("/Home");
+  } else if (pane.props.label == "Tokens") {
+    $router.push("/token");
+  } else if (pane.props.label == "NFT") {
+    $router.push("/nft");
+  }
+};
+onMounted(() => {
+  getBlock().then(async (res) => {
+    blockData.value = res.data.result;
+    pickOne.value = blockData.value.splice(0, 1);
+    pickOne.value.forEach((v) => {
+      one.blockTime = v.blockTime;
+      one.difficulty = v.difficulty;
+      one.extraData = v.extraData;
+      one.gasLimit = v.gasLimit;
+      one.gasUsed = v.gasUsed;
+      one.hash = v.hash;
+      one.logsBloom = v.logsBloom;
+      one.miner = v.miner;
+      one.nonce = v.nonce;
+      one.number = v.number;
+      one.parentHash = v.parentHash;
+      one.receiptRoot = v.receiptRoot;
+      one.sha3Uncles = v.sha3Uncles;
+      one.size = v.size;
+      one.stateRoot = v.stateRoot;
+      one.timestamp = v.timestamp;
+      one.totalDifficulty = v.totalDifficulty;
+      one.transactionsRoot = v.transactionsRoot;
+      one.txn = v.txn;
+      one.uncles = v.uncles;
+    });
+    // blockData.value.forEach((v) => {
+    //   if (v.hash == from.value) {
+    //     pickOne.push(v);
+    //   }
+    // });
+  });
+});
 </script>
 
 <style lang="scss" scoped>
@@ -215,12 +230,6 @@ export default {
 .transactions {
   height: 100%;
   font-family: "pingfang";
-  .search {
-    text-align: right !important;
-    .el-input {
-      width: 400px;
-    }
-  }
   .change {
     .first {
       .detail {
@@ -228,11 +237,11 @@ export default {
           border-top: 1px solid #ddd;
           padding: 15px 10px;
           p {
-            width: 30%;
+            width: 33%;
           }
           h4 {
             text-align: left;
-            width: 30%;
+            width: 67%;
           }
           .wrap {
             word-wrap: break-word;

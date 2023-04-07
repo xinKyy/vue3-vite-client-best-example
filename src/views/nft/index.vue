@@ -1,118 +1,90 @@
 <template>
-  <div class="home">
-    <div class="search df aic jcsb p10 bsbb container">
-      <img src="../../assets/images/logo.jpg" style="width: 200px" />
-      <div class="df aic">
-        <input
-          style="width: 350px; height: 45px; text-indent: 16px"
-          type="text"
-          class="mr20"
-          v-model="input"
-          placeholder="Search by Address/Txhash/BlockNum/BlockHash"
-        />
-        <el-icon size="26"><Search /></el-icon>
+  <div class="nft">
+    <search-for></search-for>
+    <div class="btns df aic container">
+      <div class="btn df aic jcc mr20" id="one" @click="$router.push('/Home')">
+        <span class="iconfont icon-home fz28 mr10"></span>
+        <span class="fz18 fw7">HOME</span>
+      </div>
+      <div class="btn df aic jcc mr20" @click="$router.push('/token')">
+        <span class="iconfont icon-token fz28 mr10"></span>
+        <span class="fz18 fw7">TOKENS</span>
+      </div>
+      <div class="btn df aic jcc mr20 active" @click="$router.push('/nft')">
+        <span class="iconfont icon-Wallet fz28 mr10"></span>
+        <span class="fz18 fw7">NFT</span>
       </div>
     </div>
-    <div class="change">
-      <el-tabs
-        v-model="activeName"
-        tabPosition="top"
-        class="demo-tabs fz24"
-        @tab-click="goHome"
-      >
-        <el-tab-pane label="Home" name="first" class="first"></el-tab-pane>
-        <el-tab-pane label="Tokens" name="second" class="second"> </el-tab-pane>
-        <el-tab-pane label="NFT" name="third" class="third fz16 container">
-          <p class="fz30 b1 mt20" style="margin-left: 50px">NFT</p>
-          <div class="content p10 bsbb mt40 df fdc">
-            <div class="list df fdc">
-              <div class="item p10 bsbb df">
-                <span class="b4" style="margin-right: 100px">A1(B1)</span>
-                <span
-                  class="hover"
-                  style="color: #33a6dc"
-                  @click="goNftDetail"
-                  >{{ nft }}</span
-                >
-              </div>
+    <div class="contents container mt60 mb60">
+      <div class="item"></div>
+      <div class="item"></div>
+      <div class="item on third">
+        <p class="fz30 mt20 fw7" style="margin-left: 50px; color: #02204e">
+          NFT
+        </p>
+        <div class="content bsbb mt40 df fdc">
+          <div class="list df fdc">
+            <div class="item bsbb df aic fz24 fw7">
+              <span style="margin-right: 100px">A1(B1)</span>
+              <span class="hover" style="color: #02204e" @click="goNftDetail">{{
+                nft
+              }}</span>
             </div>
           </div>
-        </el-tab-pane>
-      </el-tabs>
+        </div>
+      </div>
     </div>
-    <footer-bar class="mt60"></footer-bar>
+    <footer-bar class="mt40"></footer-bar>
   </div>
 </template>
 
-<script>
+<script setup>
 import NFT from "@/common/nft.json";
 import { getBlock, getTransation } from "@/api/index";
 import footerBar from "../../components/footer/index.vue";
-export default {
-  data() {
-    return {
-      input: "",
-      activeName: "third",
-      blockArr: [],
-      transactionArr: [],
-      nft: NFT[0].address,
-    };
-  },
-  components: {
-    footerBar,
-  },
-  methods: {
-    getBlockData() {
-      getBlock().then((res) => {
-        this.blockArr = res.data.result;
-      });
-    },
-    getTransationData() {
-      getTransation().then((res) => {
-        this.transactionArr = res.data.result;
-      });
-    },
-    deltaT(faultDat) {
-      var stime = Date.parse(new Date(faultDat));
-      var etime = Date.parse(new Date());
-      // 两个时间戳相差的毫秒数
-      var usedTime = etime - stime;
-      // 计算相差的天数
-      const days = Math.floor(usedTime / (24 * 3600 * 1000));
-      // 计算天数后剩余的毫秒数
-      var leave1 = usedTime % (24 * 3600 * 1000);
-      // 计算出小时数
-      const hours = Math.floor(leave1 / (3600 * 1000));
-      // 计算小时数后剩余的毫秒数
-      var leave2 = leave1 % (3600 * 1000);
-      // 计算相差分钟数
-      var minutes = Math.floor(leave2 / (60 * 1000));
-      var time = days + " " + "days" + "," + hours + " " + "hours ago";
-      return time;
-    },
-    goHome(pane) {
-      if (pane.props.label == "Home") {
-        this.$router.push("/Home");
-      } else if (pane.props.label == "Tokens") {
-        this.$router.push("/token");
-      } else if (pane.props.label == "NFT") {
-        this.$router.push("/nft");
-      }
-    },
-    goNftDetail() {
-      this.$router.push({
-        path: "/nftDetail",
-        query: {
-          nft: this.nft,
-        },
-      });
-    },
-  },
-  created() {
-    this.getBlockData();
-    this.getTransationData();
-  },
+import searchFor from "../../components/search/index.vue";
+import { onMounted, reactive, ref } from "vue";
+import { useRouter } from "vue-router";
+const $router = useRouter();
+
+const nft = NFT[0].address;
+const blockArr = reactive([]);
+const getBlockData = () => {
+  getBlock().then((res) => {
+    blockArr.value = res.data.result;
+  });
 };
+getBlockData();
+const transactionArr = reactive([]);
+const getTransationData = () => {
+  getTransation().then((res) => {
+    transactionArr.value = res.data.result;
+  });
+};
+getTransationData();
+
+const goNftDetail = () => {
+  $router.push({
+    path: "/nftDetail",
+    query: {
+      nft: nft,
+    },
+  });
+};
+onMounted(() => {
+  const btns = document.querySelectorAll(".btns >.btn");
+  const contents = document.querySelectorAll(".contents >.item");
+  btns.forEach((btn, ind) => {
+    btn.addEventListener("click", () => {
+      btns.forEach((value, index) => {
+        value.classList.remove("active");
+        contents[index].classList.remove("on");
+      });
+      btn.classList.add("active");
+      contents[ind].classList.add("on");
+    });
+  });
+});
 </script>
 
 <style lang="scss" scoped>
@@ -141,23 +113,34 @@ export default {
   font-size: 32px;
   font-weight: 600;
 }
-.home {
+.nft {
   height: 100%;
-  .search {
-    text-align: right !important;
-    .el-input {
-      width: 400px;
+  font-family: "pingfang";
+  .btns {
+    > div {
+      width: 180px;
+      height: 57px;
+      border-radius: 29px;
+      background: #fff;
+      color: #02204e;
+      &.active {
+        background: #02204e;
+        color: #fff;
+      }
     }
   }
-  .change {
+  .contents {
     .third {
       .content {
         .list {
           .item {
-            border-top: 1px solid #ddd;
-            width: 80%;
-            height: 100px;
             margin: 0 auto;
+            color: #02204e;
+            width: 1300px;
+            height: 118px;
+            background: #ffffff;
+            border-radius: 4px;
+            padding-left: 80px;
             .hover:hover {
               color: #666 !important;
               text-decoration: underline;
