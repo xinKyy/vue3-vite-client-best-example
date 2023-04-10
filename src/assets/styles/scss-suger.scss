@@ -1727,6 +1727,13 @@ flex布局 第一个字母为主轴
   // width: 600px
 }
 
+.elli17 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 170px
+}
+
 .elli2 {
   overflow: hidden;
   text-overflow: ellipsis;

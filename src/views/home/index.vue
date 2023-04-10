@@ -62,11 +62,16 @@
               >
                 <p class="fz48 fw5 mr20" style="width: 10%">{{ v.number }}</p>
                 <div class="ri df aic jcsa">
-                  <p>{{ deltaTS(v.timestamp * 1000) }}</p>
+                  <p>{{ deltaT(v.timestamp * 1000) }}</p>
                   <div class="df fdc">
-                    <p class="mt10 elli2">{{ v.logsBloom }}</p>
-                    <p class="mt10 elli2">
-                      by<span>{{ v.miner }}</span>
+                    <p class="mt10 elli2 hovers" @click="goAddr(v.logsBloom)">
+                      {{ v.logsBloom }}
+                    </p>
+                    <p class="mt10 df aic">
+                      <span>by &ensp;</span>
+                      <span class="elli17 hovere" @click="goAddr(v.miner)">{{
+                        v.miner
+                      }}</span>
                     </p>
                     <p class="mt10">
                       <span>{{ v.txn }}</span> txns
@@ -111,7 +116,7 @@
                     >
                   </p>
                   <p style="text-align: right">
-                    {{ deltaTS(v.timestamp * 1000) }}
+                    {{ deltaT(v.timestamp * 1000) }}
                   </p>
                 </div>
                 <div class="df aic elli bsbb jcsb" style="padding-bottom: 10px">
@@ -177,7 +182,15 @@ const topData = reactive({
   hashrate: "",
 });
 const symbol = ref(localStorage.getItem("symbol"));
-
+const goAddr = (n) => {
+  let nto = n.slice(0, 42);
+  $router.push({
+    path: "/from",
+    query: {
+      from: nto,
+    },
+  });
+};
 const goToAddr = (n) => {
   $router.push({
     path: "/to",
@@ -211,7 +224,7 @@ const getTransationData = () => {
 };
 getTransationData();
 // 处理时间函数
-const deltaTS = (faultDat) => {
+const deltaT = (faultDat) => {
   var stime = Date.parse(new Date(faultDat));
   var etime = Date.parse(new Date());
   // 两个时间戳相差的毫秒数
@@ -228,9 +241,8 @@ const deltaTS = (faultDat) => {
   var minutes = Math.floor(leave2 / (60 * 1000));
   // 计算分钟数侯剩余毫秒数
   var leave3 = leave2 % (3600 * 1000);
-  // 计算相差秒数
   var second = Math.floor(leave3 / (60 * 1000));
-  var time = minutes + " " + "mins" + "," + second + " " + "seconds ago";
+  var time = days + " " + "days" + "," + hours + " " + "hours ago";
   return time;
 };
 const goDetail = (n) => {
@@ -275,7 +287,9 @@ const toThousands = (num = 0) => {
     return n.replace(/(\d)(?=(?:\d{3})+$)/g, "$1,");
   });
 };
+const str = ref("0x0000000000000000000000000000000000000000");
 onMounted(() => {
+  console.log(str.value.length, 111);
   getWebrelay({ action: "hashrate" }).then((res) => {
     topData.value = res.data;
     topData.blockHeight = res.data.blockHeight;
@@ -382,6 +396,14 @@ onMounted(() => {
                 background: #384053;
                 border-radius: 6px;
                 backdrop-filter: blur(14px);
+                .hovers:hover {
+                  text-decoration: overline;
+                  color: #1a67f0;
+                }
+                .hovere:hover {
+                  text-decoration: overline;
+                  color: #1a67f0;
+                }
               }
             }
           }

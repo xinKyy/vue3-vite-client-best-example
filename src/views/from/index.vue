@@ -111,9 +111,20 @@
                           <td class=" "></td>
                         </tr>
                       </thead>
-                      <tbody class="fz14" style="text-indent: 3px">
+                      <tbody
+                        class="fz14"
+                        v-show="tableData.value"
+                        style="text-indent: 3px; position: relative"
+                      >
+                        <!-- <div
+                          style="width: 100% !important"
+                          id="center"
+                          class="df aic jcc"
+                        >
+                          No transactions found
+                        </div> -->
                         <tr v-for="(v, i) in tableData.value" :key="i">
-                          <td class=" ">
+                          <td>
                             <span class="elli22" @click="goTransaction(v)">
                               {{ v[0] }}
                             </span>
@@ -121,12 +132,12 @@
                           <td class="tac" style="width: 65px">
                             {{ v[1] }}
                           </td>
-                          <td class=" " style="width: 165px">
+                          <td style="width: 165px">
                             <span class="elli22" style="margin-left: 40px">{{
                               v[2]
                             }}</span>
                           </td>
-                          <td class=" " style="width: 165px">
+                          <td style="width: 165px">
                             <span class="elli22" style="margin-left: 40px">{{
                               v[3]
                             }}</span>
@@ -134,15 +145,15 @@
                           <td class="tac" style="width: 65px">
                             {{ v[4] }}
                           </td>
-                          <td class=" " style="width: 165px; text-align: right">
+                          <td style="width: 165px; text-align: right">
                             {{ deltaT(v[6] * 1000) }}
                           </td>
-                          <td class=" "></td>
+                          <td></td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
-                  <div class="df aic jcsb mt10">
+                  <div class="df aic jcsb mt60">
                     <p class="fw7 fz14">Showing 1 to 1 of 1entries</p>
                     <el-pagination
                       background
@@ -217,7 +228,6 @@ const getWeb = () => {
       localStorage.setItem("balance", web3relay.balance.value);
       web3relay.bytecode = res.data.bytecode;
       balance.value = Number(res.data.balance).toFixed(3);
-      console.log(balance.value);
       web3relay.count = res.data.count;
       web3relay.isContract = res.data.isContract;
       totalCount.value = res.data.count;
@@ -265,7 +275,11 @@ const deltaT = (faultDat) => {
   // 计算分钟数侯剩余毫秒数
   var leave3 = leave2 % (3600 * 1000);
   var second = Math.floor(leave3 / (60 * 1000));
-  var time = days + " " + "days" + "," + minutes + " " + "mins ago";
+  if (days == 0 && hours == 0) {
+    var time = minutes + " " + "mins" + "," + second + " " + "seconds";
+  } else {
+    var time = days + " " + "days" + "," + hours + " " + "hours";
+  }
   return time;
 };
 const goTransaction = (n) => {
@@ -331,6 +345,14 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+::v-deep #center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  border: 1px solid #02204e;
+  height: 40px;
+}
 ::v-deep .el-form-item {
   margin: 0 auto;
 }

@@ -154,7 +154,7 @@ const contractData = reactive({});
 const abi = ref("");
 const to = $route.query.to;
 const symbol = ref(localStorage.getItem("symbol"));
-const source = reactive(JSON.parse(localStorage.getItem(source)));
+// const source = reactive(JSON.parse(localStorage.getItem(source)));
 
 // const goHome = (pane) => {
 //   if (pane.props.label == "Home") {
@@ -195,7 +195,6 @@ onMounted(async () => {
       }
     });
     addrHash.value = detailData[0].to;
-    console.log(addrHash.value);
   });
 
   getContract({
