@@ -405,6 +405,7 @@ export default {
       options: ["balance", "count", "bytecode"],
     }).then((res) => {
       this.source = res.data;
+      localStorage.setItem("source", JSON.stringify(this.source));
     });
 
     const btns = document.querySelectorAll(".btns >.btn");

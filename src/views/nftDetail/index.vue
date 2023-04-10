@@ -81,10 +81,8 @@
               </div>
             </div>
             <div class="balance">
-              <p class="mt30 fz28" style="color: #666">Get Token Balance</p>
-              <p class="fw7 mt20 fz28" style="color: #666">
-                Enter Your Address
-              </p>
+              <p class="mt30 fz28">Get Token Balance</p>
+              <p class="fw7 mt20 fz28">Enter Your Address</p>
               <div class="posi">
                 <el-input class="mt20 ipt1" v-model="input1"> </el-input>
                 <button @click="getBalance">Go!</button>

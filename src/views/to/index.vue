@@ -154,16 +154,17 @@ const contractData = reactive({});
 const abi = ref("");
 const to = $route.query.to;
 const symbol = ref(localStorage.getItem("symbol"));
+const source = reactive(JSON.parse(localStorage.getItem(source)));
 
-const goHome = (pane) => {
-  if (pane.props.label == "Home") {
-    $router.push("/Home");
-  } else if (pane.props.label == "Tokens") {
-    $router.push("/token");
-  } else if (pane.props.label == "NFT") {
-    $router.push("/nft");
-  }
-};
+// const goHome = (pane) => {
+//   if (pane.props.label == "Home") {
+//     $router.push("/Home");
+//   } else if (pane.props.label == "Tokens") {
+//     $router.push("/token");
+//   } else if (pane.props.label == "NFT") {
+//     $router.push("/nft");
+//   }
+// };
 // 处理时间函数
 const deltaT = (faultDat) => {
   var stime = Date.parse(new Date(faultDat));
@@ -186,7 +187,6 @@ const deltaT = (faultDat) => {
   var time = days + " " + "days" + "," + minutes + " " + "mins ago";
   return time;
 };
-const arr = reactive([]);
 onMounted(async () => {
   await getTransation().then((res) => {
     res.data.result.filter((v) => {

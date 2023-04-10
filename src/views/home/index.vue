@@ -60,9 +60,9 @@
                 v-for="(v, i) in blockArr.value"
                 :key="i"
               >
-                <p class="fz48 fw5 mr20">{{ v.number }}</p>
+                <p class="fz48 fw5 mr20" style="width: 10%">{{ v.number }}</p>
                 <div class="ri df aic jcsa">
-                  <p>3 days,23 hours ago</p>
+                  <p>{{ deltaTS(v.timestamp * 1000) }}</p>
                   <div class="df fdc">
                     <p class="mt10 elli2">{{ v.logsBloom }}</p>
                     <p class="mt10 elli2">
@@ -198,6 +198,9 @@ const goFromAddr = (n) => {
 const getBlockData = () => {
   getBlock().then((res) => {
     blockArr.value = res.data.result;
+    blockArr.forEach((v) => {
+      v.timestamp = v.timestamp.toString(10);
+    });
   });
 };
 getBlockData();
@@ -374,7 +377,7 @@ onMounted(() => {
               color: #fff;
               margin-bottom: 30px;
               .ri {
-                width: 475px;
+                width: 90%;
                 height: 119px;
                 background: #384053;
                 border-radius: 6px;
