@@ -95,7 +95,10 @@
             </div>
             <div class="trans mt30">
               <table class="fw5">
-                <thead class="fz20" style="height: 40px; text-indent: 10px">
+                <thead
+                  class="fz20"
+                  style="height: 40px; text-indent: 10px; background: #02204e"
+                >
                   <tr>
                     <td style="width: 220px">TxHash</td>
                     <td style="width: 65px">Block</td>
@@ -110,6 +113,35 @@
                     <td class="tac" style="width: 165px">Age</td>
                   </tr>
                 </thead>
+                <tbody class="fz14" style="text-indent: 3px">
+                  <tr v-for="(v, i) in transactionArr.value" :key="i">
+                    <td>
+                      <span class="elli22" @click="goTransaction(v)">
+                        {{ v.transactionHash }}
+                      </span>
+                    </td>
+                    <td class="tac" style="width: 100px">
+                      {{ v.blockNumber }}
+                    </td>
+                    <td style="width: 220px">
+                      <span class="elli22" style="margin-left: 40px">{{
+                        v.from
+                      }}</span>
+                    </td>
+                    <td style="width: 165px">
+                      <span class="elli22" style="margin-left: 40px">{{
+                        v.to
+                      }}</span>
+                    </td>
+                    <td class="tac" style="width: 165px">
+                      {{ v.cumulativeGasUsed }}
+                    </td>
+                    <td class="tac" style="width: 165px">
+                      {{ v.gas }}
+                    </td>
+                    <td style="width: 165px; text-align: right"></td>
+                  </tr>
+                </tbody>
               </table>
             </div>
             <div class="source fz18">
@@ -145,7 +177,7 @@ import Web3 from "web3";
 import NFT from "@/common/nft.json";
 import footerBar from "../../components/footer/index.vue";
 import searchFor from "../../components/search/index.vue";
-import { getContract } from "@/api/index";
+import { getContract, getWebrelay } from "@/api/index";
 import { onMounted, reactive, ref } from "vue";
 
 import { useRouter } from "vue-router";
@@ -262,7 +294,11 @@ onMounted(() => {
     contractData.value = res.data.result;
     abi.value = JSON.stringify(res.data.result.abi);
   });
-
+  // getWebrelay({ addr: addr, options: ["balance", "count", "bytecode"] }).then(
+  //   (res) => {
+  //     console.log(res);
+  //   }
+  // );
   const btns = document.querySelectorAll(".btns >.btn");
   const contents = document.querySelectorAll(".contents >.item");
   btns.forEach((btn, ind) => {
@@ -573,6 +609,33 @@ onMounted(() => {
               background: #e2e2e2;
               border-radius: 12px;
               word-wrap: break-word;
+            }
+          }
+          .trans {
+            table {
+              color: #fff;
+              border: 1px solid #fff;
+              border-collapse: collapse;
+              width: 100%;
+              tr {
+                color: #fff;
+                border: 1px solid #fff;
+              }
+              tbody {
+                tr:nth-child(odd) {
+                  background: #3a5275;
+                  color: #fff;
+                  opacity: 0.7;
+                }
+                tr:nth-child(even) {
+                  background: #2d5797;
+                  color: #fff;
+                  opacity: 0.7;
+                }
+                tr {
+                  height: 40px;
+                }
+              }
             }
           }
         }

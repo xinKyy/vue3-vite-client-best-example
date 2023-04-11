@@ -10,18 +10,24 @@
         size="large"
         placeholder="Search by Address/Txhash/BlockNum/BlockHash"
       />
-      <el-icon size="26" color="#02204e"><Search /></el-icon>
+      <el-icon size="26" color="#02204e" @click="searchFor"><Search /></el-icon>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      input: "",
-    };
-  },
+<script setup>
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+const $router = useRouter();
+
+const input = ref("");
+const searchFor = () => {
+  $router.push({
+    path: "/from",
+    query: {
+      from: input.value,
+    },
+  });
 };
 </script>
 

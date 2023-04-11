@@ -50,6 +50,10 @@ const routes = [
     component: () => import('@/views/block/index.vue')
   },
   {
+    path: '/addr',
+    component: () => import('@/views/addr/index.vue')
+  },
+  {
     path: '/footer',
     component: () => import('@/components/footer/index.vue')
   },

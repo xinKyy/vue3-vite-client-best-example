@@ -2,15 +2,11 @@
   <div class="to">
     <search-for></search-for>
     <div class="btns df aic container">
-      <div
-        class="btn df aic jcc mr20 active"
-        id="one"
-        @click="$router.push('/Home')"
-      >
+      <div class="btn df aic jcc mr20" id="one" @click="$router.push('/Home')">
         <span class="iconfont icon-home fz28 mr10"></span>
         <span class="fz18 fw7">HOME</span>
       </div>
-      <div class="btn df aic jcc mr20" @click="$router.push('/token')">
+      <div class="btn df aic jcc mr20 active" @click="$router.push('/token')">
         <span class="iconfont icon-token fz28 mr10"></span>
         <span class="fz18 fw7">TOKENS</span>
       </div>
@@ -24,7 +20,6 @@
         <div class="container data">
           <p class="fz30 mb40 mt20">
             <span class="mr10 fz30 fw7"> Address</span>
-            <span class="fz20">{{ from }}</span>
           </p>
           <div class="p10 bsbb">
             <div class="top fz20">OverView</div>
@@ -32,13 +27,13 @@
               <div class="df aic jcsb mt20">
                 <div class="df fdc">
                   <p class="fz24">
-                    <!-- <span>{{ toThousands(balance) }}</span> {{ symbol }} -->
+                    <span>{{ balance.toFixed(4) }}</span> {{ symbol }}
                   </p>
                   <p class="fw7 fz20 mt20">{{ symbol }} Balance ?</p>
                 </div>
               </div>
               <div class="mt20 fz20">
-                <span>{{ web3relay.count }} &nbsp;</span>
+                <span>{{ count }} &nbsp;</span>
                 <span class="fw7">Transactions</span>
               </div>
               <div class="mt60 table">
@@ -132,11 +127,7 @@
                               {{ v[0] }}
                             </span>
                           </td>
-                          <td
-                            class="tac"
-                            style="width: 65px"
-                            @click="goBlock(v[1])"
-                          >
+                          <td class="tac" style="width: 65px">
                             {{ v[1] }}
                           </td>
                           <td style="width: 165px">
@@ -208,15 +199,12 @@ import { ref, reactive, onMounted, watch } from "vue";
 import { getAddr, getWebrelay, getContract } from "@/api/index";
 import searchFor from "../../components/search/index.vue";
 import { useRouter } from "vue-router";
-import { useRoute } from "vue-router";
 const $router = useRouter();
-const $route = useRoute();
 const formInline = reactive({
   num: 20,
   draw: 1,
   start: 0,
 });
-const from = $route.query.from;
 const searchForm = reactive({
   search: "",
 });
@@ -227,28 +215,13 @@ const web3relay = reactive({
   bytecode: "",
   isContract: "",
 });
-const balance = ref(null);
-const totalCount = ref(null);
 const symbol = ref(localStorage.getItem("symbol"));
-const getWeb = () => {
-  getWebrelay({ addr: from, options: ["balance", "count", "bytecode"] }).then(
-    (res) => {
-      web3relay.value = res.data;
-      web3relay.balance = res.data.balance;
-      localStorage.setItem("balance", web3relay.balance);
-      web3relay.bytecode = res.data.bytecode;
-      balance.value = Number(res.data.balance).toFixed(3);
-      web3relay.count = res.data.count;
-      web3relay.isContract = res.data.isContract;
-      totalCount.value = res.data.count;
-    }
-  );
-};
-getWeb();
+const balance = ref(0);
+const count = ref(0);
 const len = ref(0);
 const goSearch = () => {
   getAddr({
-    addr: from,
+    addr: "",
     colums: [],
     count: 17,
     draw: formInline.draw,
@@ -264,29 +237,9 @@ const goSearch = () => {
     len.value = res.data.result.data.length;
   });
 };
-const getData = () => {
-  getAddr({
-    addr: from,
-    colums: [],
-    count: 17,
-    draw: formInline.draw,
-    length: formInline.num,
-    order: [],
-    search: {},
-    start: formInline.start,
-  }).then((res) => {
-    tableData.value = res.data.result.data;
-  });
-};
-getData();
-const changeDraw = (n) => {
-  formInline.draw = n;
-  formInline.start = (formInline.draw - 1) * formInline.num;
-};
-
 watch(formInline, () => {
   getAddr({
-    addr: from,
+    addr: "",
     colums: [],
     count: 17,
     draw: formInline.draw,
@@ -299,11 +252,21 @@ watch(formInline, () => {
     len.value = res.data.result.data.length;
   });
 });
-// const toThousands = (num = 0) => {
-//   return num.toString().replace(/\d+/, function (n) {
-//     return n.replace(/(\d)(?=(?:\d{3})+$)/g, "$1,");
-//   });
-// };
+onMounted(() => {
+  getAddr({
+    addr: "",
+    colums: [],
+    count: 17,
+    draw: formInline.draw,
+    length: formInline.num,
+    order: [],
+    search: {},
+    start: formInline.start,
+  }).then((res) => {
+    tableData.value = res.data.result.data;
+    len.value = res.data.result.data.length;
+  });
+});
 // 处理时间函数
 const deltaT = (faultDat) => {
   var stime = Date.parse(new Date(faultDat));
@@ -325,6 +288,8 @@ const deltaT = (faultDat) => {
   var second = Math.floor(leave3 / (60 * 1000));
   if (days == 0 && hours == 0) {
     var time = minutes + " " + "mins" + "," + second + " " + "seconds";
+  } else if (days == 0) {
+    var time = hours + " " + "hours" + "," + minutes + " " + "mins";
   } else {
     var time = days + " " + "days" + "," + hours + " " + "hours";
   }
@@ -339,50 +304,10 @@ const goTransaction = (n) => {
     },
   });
 };
-const fromDetail = reactive({
-  ERC: "",
-  abi: null,
-  address: "",
-  blockNumber: "",
-  byteCode: "",
-  compilerVersion: "",
-  contractName: "",
-  decimals: 0,
-  optimization: "",
-  owner: "",
-  sourceCode: "",
-  symbol: "",
-  tokenName: "",
-  totalSupply: null,
-  valid: false,
-});
-const getFromDetail = () => {
-  getContract({ action: "find", addr: from.value }).then((res) => {
-    fromDetail.value = res.data.result;
-    fromDetail.ERC = res.data.result.ERC;
-    fromDetail.abi = res.data.result.abi;
-    fromDetail.address = res.data.result.address;
-    fromDetail.byteCode = res.data.result.byteCode;
-    fromDetail.compilerVersion = res.data.result.compilerVersion;
-    fromDetail.contractName = res.data.result.contractName;
-    fromDetail.decimals = res.data.result.decimals;
-    fromDetail.optimization = res.data.result.optimization;
-    fromDetail.owner = res.data.result.owner;
-    fromDetail.sourceCode = res.data.result.sourceCode;
-    fromDetail.symbol = res.data.result.symbol;
-    fromDetail.tokenName = res.data.result.tokenName;
-    fromDetail.totalSupply = res.data.result.totalSupply;
-    fromDetail.valid = res.data.result.valid;
-  });
-};
-getFromDetail();
-const goBlock = (n) => {
-  $router.push({
-    path: "/block",
-    query: {
-      n: n,
-    },
-  });
+const changeDraw = (n) => {
+  console.log(n);
+  formInline.draw = n;
+  formInline.start = (formInline.draw - 1) * formInline.num;
 };
 onMounted(() => {
   const btns = document.querySelectorAll(".btns >.btn");
@@ -401,6 +326,9 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+::v-deep .el-form-item__label {
+  font-size: 18px;
+}
 ::v-deep #center {
   position: absolute;
   top: 50%;
@@ -487,6 +415,9 @@ onMounted(() => {
     }
   }
 }
+// .el-pagination {
+//   background: #02204e;
+// }
 .footer {
   height: 240px;
   width: 100%;

@@ -40,13 +40,12 @@
 
 <script setup>
 import NFT from "@/common/nft.json";
-import { getBlock, getTransation } from "@/api/index";
+import { getBlock, getTransation, getWebrelay } from "@/api/index";
 import footerBar from "../../components/footer/index.vue";
 import searchFor from "../../components/search/index.vue";
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 const $router = useRouter();
-
 const nft = NFT[0].address;
 const blockArr = reactive([]);
 const getBlockData = () => {
@@ -84,6 +83,12 @@ onMounted(() => {
       contents[ind].classList.add("on");
     });
   });
+
+  getWebrelay({ addr: nft, options: ["balance", "count", "bytecode"] }).then(
+    (res) => {
+      console.log(res);
+    }
+  );
 });
 </script>
 

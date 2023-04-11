@@ -287,9 +287,7 @@ const toThousands = (num = 0) => {
     return n.replace(/(\d)(?=(?:\d{3})+$)/g, "$1,");
   });
 };
-const str = ref("0x0000000000000000000000000000000000000000");
 onMounted(() => {
-  console.log(str.value.length, 111);
   getWebrelay({ action: "hashrate" }).then((res) => {
     topData.value = res.data;
     topData.blockHeight = res.data.blockHeight;
@@ -297,6 +295,7 @@ onMounted(() => {
     topData.difficulty = res.data.difficulty;
     topData.hashrate = res.data.hashrate.toFixed(2);
   });
+
   const btns = document.querySelectorAll(".btns >.btn");
   const contents = document.querySelectorAll(".contents >.item");
   btns.forEach((btn, ind) => {

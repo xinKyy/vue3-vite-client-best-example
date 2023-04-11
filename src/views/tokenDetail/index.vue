@@ -33,19 +33,14 @@
             </div>
             <div class="df fdc">
               <span class="fz20 fw7">Contract Creator</span>
-              <p class="mt10 df fdc" style="color: #666">
-                <span
-                  class="elli3 contrahover1"
-                  @click="goTotalAddr(contractData.owner)"
+              <p class="mt10 df aic" style="color: #666">
+                <span class="elli17 contrahover1" @click="goTotalAddr">
+                  {{ contractData.owner }}</span
                 >
-                  {{ contractData.owner }}...</span
-                >
-                <span style="margin: 5px 0">at txn</span>
-                <span
-                  class="elli3 contrahover2"
-                  @click="goBlock(contractData.creationTransaction)"
-                  >{{ contractData.creationTransaction }}...</span
-                >
+                <span style="margin: 5px 0">at txn &ensp;</span>
+                <span class="elli17 contrahover2" @click="goBlock">{{
+                  contractData.creationTransaction
+                }}</span>
               </p>
             </div>
           </div>
@@ -163,7 +158,7 @@
                       style="width: 300px"
                       class="fw7"
                     >
-                      <el-input v-model="searchForm.search" />
+                      <el-input v-model="searchForm.search" @blur="goSearch" />
                     </el-form-item>
                   </el-form>
                 </div>
@@ -255,7 +250,7 @@ import Token from "@/common/token.json";
 import footerBar from "../../components/footer/index.vue";
 import searchFor from "../../components/search/index.vue";
 import Web3 from "web3";
-import { getContract, getWebrelay } from "@/api/index";
+import { getContract, getWebrelay, getAddr } from "@/api/index";
 export default {
   data() {
     return {
@@ -279,6 +274,13 @@ export default {
       transactionList: [],
       localTransactionData: JSON.parse(localStorage.getItem("transactionList")),
       symbol: "",
+      tableData: [],
+      formInline: {
+        num: 20,
+        draw: 1,
+        start: 0,
+      },
+      len: 0,
     };
   },
   components: {
@@ -286,21 +288,11 @@ export default {
     searchFor,
   },
   methods: {
-    goTotalAddr(n) {
-      this.$router.push({
-        path: "/from",
-        query: {
-          from: n,
-        },
-      });
+    goTotalAddr() {
+      this.$router.push("/addr");
     },
-    goBlock(n) {
-      this.$router.push({
-        path: "/block",
-        query: {
-          from: n,
-        },
-      });
+    goBlock() {
+      this.$router.push("/block");
     },
     goHome(pane) {
       if (pane.props.label == "Home") {
@@ -310,6 +302,24 @@ export default {
       } else if (pane.props.label == "NFT") {
         this.$router.push("/nft");
       }
+    },
+    goSearch() {
+      getAddr({
+        addr: this.searchForm.search,
+        colums: [],
+        count: 17,
+        draw: this.formInline.draw,
+        length: this.formInline.num,
+        order: [],
+        search: {
+          regex: false,
+          value: this.searchForm.search,
+        },
+        start: this.formInline.start,
+      }).then((res) => {
+        this.tableData = res.data.result.data;
+        this.len = res.data.result.data.length;
+      });
     },
     async getBalance() {
       let web3 = window.ethereum && new Web3(window.ethereum);
@@ -625,6 +635,31 @@ export default {
               background: #e2e2e2;
               border-radius: 12px;
               word-wrap: break-word;
+            }
+            .text::-webkit-scrollbar-track-piece {
+              background-color: rgba(0, 0, 0, 0.1);
+              border-left: 1px solid rgba(0, 0, 0, 0);
+            }
+            .text::-webkit-scrollbar {
+              width: 5px;
+              height: 13px;
+              -webkit-border-radius: 5px;
+              -moz-border-radius: 5px;
+              border-radius: 5px;
+            }
+            .text::-webkit-scrollbar-thumb {
+              background-color: #02204e;
+              background-clip: padding-box;
+              -webkit-border-radius: 5px;
+              -moz-border-radius: 5px;
+              border-radius: 5px;
+              min-height: 28px;
+            }
+            .text::-webkit-scrollbar-thumb:hover {
+              background-color: #02204e;
+              -webkit-border-radius: 5px;
+              -moz-border-radius: 5px;
+              border-radius: 5px;
             }
           }
           .trans {

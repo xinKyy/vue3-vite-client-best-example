@@ -4,7 +4,7 @@ export const getBlock = (data) => {
   return request({
     url: '/api/getBlock',
     method: 'POST',
-    data: {}
+    data
   })
 }
 export const getTransation = (data) => {
