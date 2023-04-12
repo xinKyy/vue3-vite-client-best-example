@@ -283,7 +283,6 @@ const changeDraw = (n) => {
   formInline.draw = n;
   formInline.start = (formInline.draw - 1) * formInline.num;
 };
-
 watch(formInline, () => {
   getAddr({
     addr: from,

@@ -1,7 +1,7 @@
 <template>
   <div class="search df aic jcsb bsbb container">
     <div class="logo df aic jcc">
-      <img src="../../assets/images/logo1.png" />
+      <img src="../../assets/images/lo.jpg" />
     </div>
     <div class="for">
       <el-input
@@ -40,12 +40,12 @@ const searchFor = () => {
   padding: 45px 0;
   .logo {
     width: 248px;
-    height: 57px;
+    height: 60px;
     background: #fff;
     border-radius: 29px;
     img {
       width: 164px;
-      height: 38px;
+      height: 60px;
     }
   }
   .el-input {
