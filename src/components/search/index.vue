@@ -56,6 +56,9 @@ const searchFor = (search) => {
         n: search,
       },
     });
+    setTimeout(() => {
+      $router.go(0)
+    }, 100)
   }
 };
 </script>
