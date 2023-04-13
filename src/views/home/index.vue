@@ -2,11 +2,7 @@
   <div class="home">
     <search-for></search-for>
     <div class="btns df aic container">
-      <div
-        class="btn df aic jcc mr20 active"
-        id="one"
-        @click="$router.push('/Home')"
-      >
+      <div class="btn df aic jcc mr20 active" id="one" @click="$router.push('/Home')">
         <span class="iconfont icon-home fz28 mr10"></span>
         <span class="fz18 fw7">HOME</span>
       </div>
@@ -43,23 +39,17 @@
           <div class="left p20 bsbb">
             <div class="df aic jcsb mb20" style="padding-bottom: 10px">
               <div class="df" style="align-items: end">
-                <img
-                  class="mr20"
-                  src="../../assets/images/list.png"
-                  style="width: 41px; height: 38px"
-                />
+                <img class="mr20" src="../../assets/images/list.png" style="width: 41px; height: 38px" />
                 <p class="fz16 fw7" style="color: #fff">BLOCKS</p>
               </div>
               <p class="fz16 blue" @click="$router.go(0)">
-                <el-icon color="#fff" size="26"><RefreshRight /></el-icon>
+                <el-icon color="#fff" size="26">
+                  <RefreshRight />
+                </el-icon>
               </p>
             </div>
             <div class="list df fdc p10 bsbb">
-              <div
-                class="one df aic jcsb ffdin"
-                v-for="(v, i) in blockArr.value"
-                :key="i"
-              >
+              <div class="one df aic jcsb ffdin" v-for="(v, i) in blockArr.value" :key="i">
                 <p class="fz48 fw5 mr20" style="width: 10%">{{ v.number }}</p>
                 <div class="ri df aic jcsa">
                   <p>{{ deltaT(v.timestamp * 1000) }}</p>
@@ -84,36 +74,24 @@
           <div class="right fz16 p20 bsbb">
             <div class="df aic jcsb mb20" style="padding-bottom: 20px">
               <div class="df" style="align-items: end">
-                <img
-                  class="mr20"
-                  src="../../assets/images/list.png"
-                  style="width: 41px; height: 38px"
-                />
+                <img class="mr20" src="../../assets/images/list.png" style="width: 41px; height: 38px" />
                 <p class="fz16 fw7" style="color: #fff">Transacions</p>
               </div>
               <p class="fz16 blue" @click="$router.go(0)">
-                <el-icon color="#fff" size="26"><RefreshRight /></el-icon>
+                <el-icon color="#fff" size="26">
+                  <RefreshRight />
+                </el-icon>
               </p>
             </div>
             <div class="list df fdc bsbb" style="padding: 0 10px">
-              <div
-                class="item mb20 df fdc p20 bsbb"
-                style="color: #fff"
-                v-for="(v, i) in transactionArr.value"
-                :key="i"
-              >
+              <div class="item mb20 df fdc p20 bsbb" style="color: #fff" v-for="(v, i) in transactionArr.value" :key="i">
                 <div style="text-align: right" class="mb10">
                   {{ v.value }} {{ symbol }}
                 </div>
                 <div class="df aic jcsb mb10" style="width: 100%">
                   <p class="elli df aic" style="width: 300px">
                     <span class="mr10">TX &ensp;</span>
-                    <span
-                      class="a1 hover"
-                      style="display: inline-block"
-                      @click="goDetail(v)"
-                      >{{ v.hash }}</span
-                    >
+                    <span class="a1 hover" style="display: inline-block" @click="goDetail(v)">{{ v.hash }}</span>
                   </p>
                   <p style="text-align: right">
                     {{ deltaT(v.timestamp * 1000) }}
@@ -148,10 +126,7 @@
           <p style="color: #a2abb7" class="fz16 mb10">
             This is an open source Blockchain Explorer.
           </p>
-          <img
-            src="../../assets/images/powered-by-etcexplorer-w.png"
-            style="width: 157px; height: 51px"
-          />
+          <img src="../../assets/images/powered-by-etcexplorer-w.png" style="width: 157px; height: 51px" />
         </div>
         <div class="df fdc">
           <p class="mb20 fz18 fw7" style="color: #44b6ae">FOLLOW US ON</p>
@@ -263,7 +238,7 @@ const send = () => {
   let fromAddress = web3.eth.getAccounts();
   myContract.methods.store(1).send({ from: fromAddress[0] }, function () {
     if (window.ethereum) {
-      window.ethereum.enable().then((res) => {});
+      window.ethereum.enable().then((res) => { });
     } else {
       alert("请安装MetaMask钱包");
     }
@@ -288,6 +263,8 @@ const toThousands = (num = 0) => {
   });
 };
 onMounted(() => {
+  const str = '0x3f39b2d2bee948896d016c66f31bc20c12dfd105ccf6e707ce13aa224e400dcc'
+  console.log(str.length, 111)
   getWebrelay({ action: "hashrate" }).then((res) => {
     topData.value = res.data;
     topData.blockHeight = res.data.blockHeight;
@@ -316,89 +293,109 @@ onMounted(() => {
   width: 300px;
   height: 30px;
 }
+
 ::v-deep .el-button {
   width: 60px;
   height: 30px;
   background: #efefef;
 }
+
 ::v-deep .el-tabs__nav-scroll {
   margin-top: 30px;
   margin-right: 20%;
   float: right;
   font-size: 24px !important;
 }
+
 ::v-deep .el-tabs__item {
   font-size: 20px;
   color: #6b778c;
 }
-.demo-tabs > .el-tabs__content {
+
+.demo-tabs>.el-tabs__content {
   padding: 32px;
   color: #6b778c;
   font-size: 32px;
   font-weight: 600;
 }
+
 .home {
   height: 100%;
   font-family: "pingfang";
+
   .btns {
-    > div {
+    >div {
       width: 180px;
       height: 57px;
       border-radius: 29px;
       background: #fff;
       color: #02204e;
+
       &.active {
         background: #02204e;
         color: #fff;
       }
     }
   }
+
   .contents {
-    > div {
+    >div {
       display: none;
+
       &.on {
         display: block;
       }
     }
+
     .first {
       .topData {
         color: #02204e;
+
         h3 {
           font-family: "din";
           font-weight: 1400;
           font-size: 46px !important;
         }
+
         p {
           font-size: 16px;
           margin-top: 5px;
         }
       }
+
       .contentData {
         width: 100%;
         margin-top: 100px;
-        > div {
+
+        >div {
           width: 48%;
           height: 600px;
         }
+
         .left {
           background: #1c2437;
           border-radius: 20px;
+
           .list {
             overflow-y: scroll;
             height: 480px;
+
             .one {
               color: #fff;
               margin-bottom: 30px;
+
               .ri {
                 width: 90%;
                 height: 119px;
                 background: #384053;
                 border-radius: 6px;
                 backdrop-filter: blur(14px);
+
                 .hovers:hover {
                   text-decoration: overline;
                   color: #1a67f0;
                 }
+
                 .hovere:hover {
                   text-decoration: overline;
                   color: #1a67f0;
@@ -406,10 +403,12 @@ onMounted(() => {
               }
             }
           }
+
           .list::-webkit-scrollbar-track-piece {
             background-color: rgba(0, 0, 0, 0.1);
             border-left: 1px solid rgba(0, 0, 0, 0);
           }
+
           .list::-webkit-scrollbar {
             width: 5px;
             height: 13px;
@@ -417,6 +416,7 @@ onMounted(() => {
             -moz-border-radius: 5px;
             border-radius: 5px;
           }
+
           .list::-webkit-scrollbar-thumb {
             background-color: rgba(52, 112, 89, 0.5);
             background-clip: padding-box;
@@ -425,6 +425,7 @@ onMounted(() => {
             border-radius: 5px;
             min-height: 28px;
           }
+
           .list::-webkit-scrollbar-thumb:hover {
             background-color: rgba(52, 112, 89, 0.8);
             -webkit-border-radius: 5px;
@@ -432,44 +433,55 @@ onMounted(() => {
             border-radius: 5px;
           }
         }
+
         .right {
           background: #1c2437;
           border-radius: 20px;
+
           .list {
             overflow-y: scroll;
             height: 480px;
+
             .item {
               background: #384053;
               border-radius: 6px;
               padding-bottom: 20px;
               width: 100%;
               height: 200px;
+
               .a1 {
                 width: 200px;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                white-space: nowrap; /*加宽度width属来兼容部分浏览*/
+                white-space: nowrap;
+                /*加宽度width属来兼容部分浏览*/
               }
+
               .a1:hover {
                 text-decoration: overline;
                 color: #1a67f0;
               }
+
               .a2 {
                 width: 300px;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                white-space: nowrap; /*加宽度width属来兼容部分浏览*/
+                white-space: nowrap;
+                /*加宽度width属来兼容部分浏览*/
               }
+
               .a2:hover {
                 text-decoration: overline;
                 color: #1a67f0;
               }
             }
           }
+
           .list::-webkit-scrollbar-track-piece {
             background-color: rgba(0, 0, 0, 0.1);
             border-left: 1px solid rgba(0, 0, 0, 0);
           }
+
           .list::-webkit-scrollbar {
             width: 5px;
             height: 13px;
@@ -477,6 +489,7 @@ onMounted(() => {
             -moz-border-radius: 5px;
             border-radius: 5px;
           }
+
           .list::-webkit-scrollbar-thumb {
             background-color: rgba(52, 112, 89, 0.5);
             background-clip: padding-box;
@@ -485,6 +498,7 @@ onMounted(() => {
             border-radius: 5px;
             min-height: 28px;
           }
+
           .list::-webkit-scrollbar-thumb:hover {
             background-color: rgba(52, 112, 89, 0.8);
             -webkit-border-radius: 5px;
@@ -496,14 +510,17 @@ onMounted(() => {
     }
   }
 }
+
 .footer {
   height: 240px;
   width: 100%;
   background: #1c2437;
+
   .shallow {
     height: 160px;
     padding: 40px 0 30px 0;
   }
+
   .deep {
     background: #384053;
     width: 100%;

@@ -38,41 +38,20 @@
               <p class="fw7 mt20 fz26">Enter Your Address</p>
               <div class="posi df fdc fz20 fw7 mt20">
                 <div class="df aic">
-                  <span
-                    class="mr10"
-                    style="padding-top: 10px; display: inline-block"
-                    >Address</span
-                  >
-                  <el-input
-                    class="mt20 ipt1"
-                    v-model="input2"
-                    label="address"
-                    :placeholder="nft"
-                  >
+                  <span class="mr10" style="padding-top: 10px; display: inline-block">Address</span>
+                  <el-input class="mt20 ipt1" v-model="input2" label="address" :placeholder="nft">
                   </el-input>
                 </div>
                 <div class="df aic">
-                  <span
-                    class="mr10"
-                    style="
-                      padding-top: 10px;
-                      display: inline-block;
-                      margin-right: 15px;
-                    "
-                    >TokenId</span
-                  >
+                  <span class="mr10" style="
+                        padding-top: 10px;
+                        display: inline-block;
+                        margin-right: 15px;
+                      ">TokenId</span>
                   <el-form>
                     <el-form-item>
-                      <el-select
-                        v-model="tokenId"
-                        placeholder="please select your tokenId"
-                      >
-                        <el-option
-                          v-for="(v, i) in tokenidArr"
-                          :key="i"
-                          :label="v"
-                          :value="v"
-                        />
+                      <el-select v-model="tokenId" placeholder="please select your tokenId">
+                        <el-option v-for="(v, i) in tokenidArr" :key="i" :label="v" :value="v" />
                       </el-select>
                     </el-form-item>
                   </el-form>
@@ -95,10 +74,7 @@
             </div>
             <div class="trans mt30">
               <table class="fw5">
-                <thead
-                  class="fz20"
-                  style="height: 40px; text-indent: 10px; background: #02204e"
-                >
+                <thead class="fz20" style="height: 40px; text-indent: 10px; background: #02204e">
                   <tr>
                     <td style="width: 220px">TxHash</td>
                     <td style="width: 65px">Block</td>
@@ -312,244 +288,130 @@ onMounted(() => {
     });
   });
 });
-// export default {
-//   data() {
-//     return {
-//       input1: "", //balance
-//       input2: "", //transfer
-//       input3: "", //transfer
-//       activeName: "third",
-//       tokens: null,
-//       token: null,
-//       nft: this.$route.query.nft,
-//       addrHash: "",
-//       detailData: [],
-//       contractData: "",
-//       abi: "",
-//       vertify: "",
-//       nftAbi: NFT[0].abi,
-//       transactionArr: [],
-//       tokenidArr: [],
-//       tokenId: "",
-//     };
-//   },
-//   components: {
-//     searchFor,
-//     footerBar,
-//   },
-
-//   methods: {
-//     goDetail(n) {
-//       this.$router.push({
-//         path: "/transactions",
-//         query: {
-//           blockNumber: n.blockNumber,
-//         },
-//       });
-//     },
-//     goVertify() {
-//       this.$router.push({
-//         path: "/vertifyContract",
-//         query: {
-//           vertify: this.nft,
-//         },
-//       });
-//     },
-//     goHome(pane) {
-//       if (pane.props.label == "Home") {
-//         this.$router.push("/Home");
-//       } else if (pane.props.label == "Tokens") {
-//         this.$router.push("/token");
-//       } else if (pane.props.label == "NFT") {
-//         this.$router.push("/nft");
-//       }
-//     },
-//     async getBalance() {
-//       let web3 = window.ethereum && new Web3(window.ethereum);
-//       const contractAbi = NFT[0].abi;
-//       const contractAddress = NFT[0].address;
-//       const myContract = new web3.eth.Contract(contractAbi, contractAddress);
-//       myContract.methods
-//         .balanceOf(this.input1)
-//         .call()
-//         .then((res) => {
-//           this.tokens = res;
-//           this.showTokens();
-//         });
-//     },
-//     async getTokenId() {
-//       let web3 = window.ethereum && new Web3(window.ethereum);
-//       const contractAbi = NFT[0].abi;
-//       const contractAddress = NFT[0].address;
-//       const myContract = new web3.eth.Contract(contractAbi, contractAddress); //所有代币的abi可以通用（abi,合约地址）
-//       let fromAddress = await web3.eth.getAccounts();
-//       let account = fromAddress[0];
-//       myContract.methods
-//         .balanceOf(account)
-//         .call()
-//         .then((res) => {
-//           this.token = res;
-//           for (var i = 0; i < this.token; i++) {
-//             myContract.methods
-//               .tokenOfOwnerByIndex(fromAddress[0], i)
-//               .call()
-//               .then((res) => {
-//                 this.tokenidArr.push(res);
-//               });
-//           }
-//         });
-//     },
-//     //ETH转账
-//     async getTransfer() {
-//       let web3 = window.ethereum && new Web3(window.ethereum);
-//       const contractAbi = NFT[0].abi;
-//       const contractAddress = NFT[0].address;
-//       const myContract = new web3.eth.Contract(contractAbi, contractAddress);
-//       let fromAddress = await web3.eth.getAccounts();
-//       myContract.methods
-//         .transferFrom(fromAddress[0], this.input2, this.tokenId)
-//         .send({ from: fromAddress[0] })
-//         .then((r) => {
-//           this.transactionArr.push(r);
-//         });
-//     },
-//     showTokens() {
-//       const tokens = document.querySelector("#tokens");
-//       if (this.tokens != null) {
-//         tokens.classList.add("on");
-//       }
-//     },
-//     // getAccount() {
-//     //   let web3 = window.ethereum && new Web3(window.ethereum);
-//     //   console.log(web3.eth.accounts.create(web3.utils.randomHex(32)));
-//     // },
-//   },
-//   created() {
-//     this.getTokenId();
-//   },
-//   async mounted() {
-//     const titles = document.querySelectorAll(".title>p");
-//     const contents = document.querySelectorAll(".contents>div");
-//     titles.forEach((p, i) => {
-//       p.addEventListener("click", () => {
-//         titles.forEach((value, index) => {
-//           value.classList.remove("active");
-//           contents[index].classList.remove("on");
-//         });
-//         p.classList.add("active");
-//         contents[i].classList.add("on");
-//       });
-//     });
-
-//     getContract({
-//       addr: this.addr,
-//       action: "find",
-//     }).then((res) => {
-//       this.contractData = res.data.result;
-//       this.abi = JSON.stringify(res.data.result.abi);
-//     });
-//   },
 </script>
 
 <style lang="scss" scoped>
 ::v-deep .el-input__inner {
   width: 300px;
   height: 30px;
+  font-size: 20px;
 }
+
 ::v-deep .el-button {
   width: 60px;
   height: 30px;
   background: #efefef;
 }
+
 ::v-deep .el-tabs__nav-scroll {
   margin-top: 30px;
   float: right;
   margin-right: 20%;
   font-size: 24px !important;
 }
+
 ::v-deep .el-tabs__item {
   font-size: 20px;
   color: #6b778c;
 }
+
 ::v-deep .el-input-group__append {
   background: #578ebe;
   color: #fff;
   font-size: 20px;
 }
+
 ::v-deep .el-form-item__content {
   margin-top: 20px;
   height: 40px;
 }
+
 ::v-deep .el-input__wrapper {
   padding: 5px 20px;
   height: 74px;
 }
-.demo-tabs > .el-tabs__content {
+
+.demo-tabs>.el-tabs__content {
   padding: 32px;
   color: #6b778c;
   font-size: 32px;
   font-weight: 600;
 }
+
 .nftDetail {
   height: 100%;
   font-family: "pingfang";
+
   .btns {
-    > div {
+    >div {
       width: 180px;
       height: 57px;
       border-radius: 29px;
       background: #fff;
       color: #02204e;
+
       &.active {
         background: #02204e;
         color: #fff;
       }
     }
   }
+
   .contents {
     .third {
       color: #02204e;
+
       .topData {
         .hover:hover {
           text-decoration: underline;
         }
-        > div {
-          > div {
+
+        >div {
+          >div {
             width: 50%;
           }
         }
       }
+
       .change {
         .title {
           border-bottom: 1px solid #02204e;
-          > p {
+
+          >p {
             padding: 20px;
             box-sizing: border-box;
             height: 60px;
             text-align: center;
+
             &.active {
               border-bottom: 5px solid #02204e;
             }
           }
-          > p:hover {
+
+          >p:hover {
             border-bottom: 5px solid #2961b4;
           }
         }
+
         .contentss {
-          > div {
+          >div {
             display: none;
+
             &.on {
               display: block;
             }
           }
+
           .balance {
             .ipt1 {
               height: 40px;
               width: 80%;
             }
+
             .posi {
               position: relative;
               width: 1200px;
+
               button {
                 position: absolute;
                 right: 0%;
@@ -561,27 +423,34 @@ onMounted(() => {
                 color: #fff;
                 font-size: 24px;
               }
+
               .el-input {
                 width: 1070px;
                 height: 73px;
                 background: #fff;
               }
             }
+
             #tokens {
               display: none;
+
               &.on {
                 display: block;
               }
             }
           }
+
           .transfer {
+
             .ipt1,
             .ipt2 {
               height: 40px;
               width: 80%;
             }
+
             .posi {
               width: 1200px;
+
               button {
                 width: 130px;
                 height: 73px;
@@ -590,6 +459,7 @@ onMounted(() => {
                 color: #fff;
                 font-size: 24px;
               }
+
               .el-input {
                 width: 1070px;
                 height: 73px;
@@ -597,11 +467,13 @@ onMounted(() => {
               }
             }
           }
+
           .source {
             .hover:hover {
               text-decoration: underline;
               color: #666 !important;
             }
+
             .text {
               width: 100%;
               height: 240px;
@@ -611,27 +483,32 @@ onMounted(() => {
               word-wrap: break-word;
             }
           }
+
           .trans {
             table {
               color: #fff;
               border: 1px solid #fff;
               border-collapse: collapse;
               width: 100%;
+
               tr {
                 color: #fff;
                 border: 1px solid #fff;
               }
+
               tbody {
                 tr:nth-child(odd) {
                   background: #3a5275;
                   color: #fff;
                   opacity: 0.7;
                 }
+
                 tr:nth-child(even) {
                   background: #2d5797;
                   color: #fff;
                   opacity: 0.7;
                 }
+
                 tr {
                   height: 40px;
                 }
@@ -640,9 +517,11 @@ onMounted(() => {
           }
         }
       }
+
       .list {
         .item {
           border-top: 1px solid #999;
+
           .hover:hover {
             color: #666;
             text-decoration: underline;
@@ -651,5 +530,4 @@ onMounted(() => {
       }
     }
   }
-}
-</style>
+}</style>

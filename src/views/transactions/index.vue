@@ -2,11 +2,7 @@
   <div class="transactions">
     <search-for></search-for>
     <div class="btns df aic container">
-      <div
-        class="btn df aic jcc mr20 active"
-        id="one"
-        @click="$router.push('/Home')"
-      >
+      <div class="btn df aic jcc mr20 active" id="one" @click="$router.push('/Home')">
         <span class="iconfont icon-home fz28 mr10"></span>
         <span class="fz18 fw7">HOME</span>
       </div>
@@ -109,10 +105,7 @@
           <p style="color: #a2abb7" class="fz16 mb10">
             This is an open source Blockchain Explorer.
           </p>
-          <img
-            src="../../assets/images/powered-by-etcexplorer-w.png"
-            style="width: 157px; height: 51px"
-          />
+          <img src="../../assets/images/powered-by-etcexplorer-w.png" style="width: 157px; height: 51px" />
         </div>
         <div class="df fdc">
           <p class="mb20 fz18 fw7" style="color: #44b6ae">FOLLOW US ON</p>
@@ -371,21 +364,25 @@ onMounted(() => {
   width: 300px;
   height: 30px;
 }
+
 ::v-deep .el-button {
   width: 60px;
   height: 30px;
   background: #efefef;
 }
+
 ::v-deep .el-tabs__nav-scroll {
   margin-top: 30px;
   margin-right: 20%;
   float: right;
   font-size: 24px !important;
 }
+
 ::v-deep .el-tabs__item {
   font-size: 20px;
 }
-.demo-tabs > .el-tabs__content {
+
+.demo-tabs>.el-tabs__content {
   padding: 32px;
   color: #6b778c;
   font-size: 32px;
@@ -395,49 +392,88 @@ onMounted(() => {
 .transactions {
   height: 100%;
   font-family: "pingfang";
+
   .btns {
-    > div {
+    >div {
       width: 180px;
       height: 57px;
       border-radius: 29px;
       background: #fff;
       color: #02204e;
+
       &.active {
         background: #02204e;
         color: #fff;
       }
     }
   }
+
   .contents {
     .first {
       background: #fff;
       border-radius: 20px;
       padding: 20px 50px;
       color: #02204e;
+
       .detail {
         .item {
           border-top: 1px solid #ddd;
           padding: 15px 10px;
+
           p {
             width: 32%;
             font-weight: 700;
           }
+
           h4 {
             text-align: left;
             width: 67%;
             font-weight: 600;
           }
+
           .wrap {
             word-wrap: break-word;
           }
+
           .text {
             width: 67%;
             height: 106px;
             background: #e2e2e2;
             border-radius: 12px;
             word-wrap: break-word;
+            overflow-y: scroll;
+          }
+
+          .text::-webkit-scrollbar-track-piece {
+            background-color: rgba(0, 0, 0, 0.1);
+            border-left: 1px solid rgba(0, 0, 0, 0);
+          }
+
+          .text::-webkit-scrollbar {
+            width: 5px;
+            height: 13px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+          }
+
+          .text::-webkit-scrollbar-thumb {
+            background-color: gray;
+            background-clip: padding-box;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            min-height: 28px;
+          }
+
+          .text::-webkit-scrollbar-thumb:hover {
+            background-color: gray;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
           }
         }
+
         .item:hover {
           background: #eef1f5;
         }
@@ -445,6 +481,7 @@ onMounted(() => {
     }
   }
 }
+
 .footer {
   height: 240px;
   width: 100%;
@@ -454,6 +491,7 @@ onMounted(() => {
     height: 160px;
     padding: 40px 0 30px 0;
   }
+
   .deep {
     background: #384053;
     width: 100%;

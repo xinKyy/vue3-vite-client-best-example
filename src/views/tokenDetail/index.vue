@@ -25,18 +25,15 @@
           </p>
           <div class="df">
             <div class="df fdc fz26">
-              <span class="fw7 mt10"
-                >{{ contractData.tokenName }} Address Balance ({{
-                  contractData.symbol
-                }})</span
-              >
+              <span class="fw7 mt10">{{ contractData.tokenName }} Address Balance ({{
+                contractData.symbol
+              }})</span>
             </div>
             <div class="df fdc">
               <span class="fz20 fw7">Contract Creator</span>
               <p class="mt10 df aic" style="color: #666">
                 <span class="elli17 contrahover1" @click="goTotalAddr">
-                  {{ contractData.owner }}</span
-                >
+                  {{ contractData.owner }}</span>
                 <span style="margin: 5px 0">at txn &ensp;</span>
                 <span class="elli17 contrahover2" @click="goBlock">{{
                   contractData.creationTransaction
@@ -74,11 +71,7 @@
               </p>
               <p class="fw7 mt20 fz20">Enter Your Address</p>
               <div class="posi">
-                <el-input
-                  class="mt20 ipt1"
-                  v-model="input1"
-                  :placeholder="contractData.address"
-                >
+                <el-input class="mt20 ipt1" v-model="input1" :placeholder="contractData.address">
                 </el-input>
                 <button @click="getBalance">Go!</button>
                 <p id="tokens" class="fz24 mt40" style="color: #666">
@@ -92,35 +85,19 @@
               <p class="mt30 mb20 fz30">Get Transfer</p>
               <div class="posi df fdc">
                 <div class="df aic fz24">
-                  <span
-                    class="mr10 b1"
-                    style="padding-top: 10px; display: inline-block"
-                    >ADDRESS</span
-                  >
-                  <el-input
-                    class="mt20 ipt1"
-                    v-model="input2"
-                    label="address"
-                    :placeholder="addr"
-                  >
+                  <span class="mr10 b1" style="padding-top: 10px; display: inline-block">ADDRESS</span>
+                  <el-input class="mt20 ipt1" v-model="input2" label="address" :placeholder="addr">
                   </el-input>
                 </div>
                 <div class="df aic fz24">
-                  <span
-                    class="mr10 b1"
-                    style="
-                      padding-top: 10px;
-                      display: inline-block;
-                      margin-right: 15px;
-                    "
-                  >
+                  <span class="mr10 b1" style="
+                          padding-top: 10px;
+                          display: inline-block;
+                          margin-right: 15px;
+                        ">
                     AMOUNT
                   </span>
-                  <el-input
-                    class="mt20 ipt2"
-                    v-model="input3"
-                    placeholder="please input amount"
-                  >
+                  <el-input class="mt20 ipt2" v-model="input3" placeholder="please input amount">
                   </el-input>
                 </div>
                 <button class="mt40" @click="getTransfer">Go!</button>
@@ -129,12 +106,7 @@
             <div class="trans mt30">
               <div class="df aic jcsb mt20 mb20">
                 <div class="df aic" style="height: 42px">
-                  <el-form
-                    :inline="true"
-                    :model="formInline"
-                    class="demo-form-inline"
-                    style="width: 60px"
-                  >
+                  <el-form :inline="true" :model="formInline" class="demo-form-inline" style="width: 60px">
                     <el-form-item>
                       <el-select v-model="formInline.num">
                         <el-option label="10" value="10" />
@@ -148,26 +120,15 @@
                   <span style="margin-left: 13px" class="b2">transaction</span>
                 </div>
                 <div>
-                  <el-form
-                    :inline="true"
-                    :model="searchForm"
-                    class="demo-form-inline"
-                  >
-                    <el-form-item
-                      label="Search :"
-                      style="width: 300px"
-                      class="fw7"
-                    >
+                  <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+                    <el-form-item label="Search :" style="width: 300px" class="fw7">
                       <el-input v-model="searchForm.search" @blur="goSearch" />
                     </el-form-item>
                   </el-form>
                 </div>
               </div>
               <table class="fw5">
-                <thead
-                  class="b1"
-                  style="height: 40px; text-indent: 10px; background: #02204e"
-                >
+                <thead class="b1" style="height: 40px; text-indent: 10px; background: #02204e">
                   <tr>
                     <td style="width: 280px">TxHash</td>
                     <td style="width: 100px">Block</td>
@@ -224,11 +185,7 @@
             <div class="level">
               <p class="fw7 mt20 fz30">Enter Your Address</p>
               <div class="posi">
-                <el-input
-                  class="mt20 ipt1"
-                  v-model="input4"
-                  placeholder="0xf9f412bAdd9b4451670bdC605f5e4eaACcefbccE"
-                >
+                <el-input class="mt20 ipt1" v-model="input4" placeholder="0xf9f412bAdd9b4451670bdC605f5e4eaACcefbccE">
                 </el-input>
                 <button @click="getLevel">Go!</button>
               </div>
@@ -438,99 +395,122 @@ export default {
 ::v-deep .el-input__wrapper {
   padding: 5px 20px;
 }
+
 ::v-deep .el-form-item {
   margin: 0 auto;
 }
+
 ::v-deep .el-input__inner {
   width: 30px;
   height: 30px;
+  font-size: 20px;
 }
+
 ::v-deep .el-button {
   width: 60px;
   height: 30px;
   background: #efefef;
 }
+
 ::v-deep .el-tabs__nav-scroll {
   margin-top: 30px;
   float: right;
   margin-right: 20%;
   font-size: 24px !important;
 }
+
 ::v-deep .el-tabs__item {
   font-size: 20px;
   color: #6b778c;
 }
+
 ::v-deep .el-input-group__append {
   background: #578ebe;
   color: #fff;
   font-size: 20px;
 }
-.demo-tabs > .el-tabs__content {
+
+.demo-tabs>.el-tabs__content {
   padding: 32px;
   color: #6b778c;
   font-size: 32px;
   font-weight: 600;
 }
+
 .tokenDetail {
   height: 100%;
   font-family: "pingfang";
+
   .btns {
-    > div {
+    >div {
       width: 180px;
       height: 57px;
       border-radius: 29px;
       background: #fff;
       color: #02204e;
+
       &.active {
         background: #02204e;
         color: #fff;
       }
     }
   }
+
   .contents {
     .second {
       color: #02204e;
+
       .topData {
         .hover:hover {
           text-decoration: underline;
         }
-        > div {
-          > div {
+
+        >div {
+          >div {
             width: 50%;
           }
         }
+
         .contrahover1:hover {
           text-decoration: underline;
         }
+
         .contrahover2:hover {
           text-decoration: underline;
         }
       }
+
       .change {
         .title {
           border-bottom: 1px solid #02204e;
-          > p {
+
+          >p {
             padding: 20px;
             box-sizing: border-box;
             height: 60px;
             color: #02204e;
             font-weight: 700;
             text-align: center;
+
             &.active {
               border-bottom: 5px solid #02204e;
             }
           }
-          > p:hover {
+
+          >p:hover {
             border-bottom: 5px solid #2961b4;
           }
         }
+
         .contentss {
-          > div {
+          >div {
             display: none;
+
             &.on {
               display: block;
             }
           }
+
           .balance {
             .ipt1 {
               height: 40px;
@@ -540,6 +520,7 @@ export default {
             .posi {
               position: relative;
               width: 1200px;
+
               button {
                 position: absolute;
                 right: 0;
@@ -552,30 +533,37 @@ export default {
                 color: #fff;
                 font-size: 24px;
               }
+
               .el-input {
                 width: 1070px;
                 height: 73px;
                 background: #fff;
               }
             }
+
             #tokens {
               display: none;
+
               &.on {
                 display: block;
               }
             }
           }
+
           .transfer {
             .ipt1 {
               height: 40px;
               width: 60%;
             }
+
             .ipt2 {
               height: 40px;
               width: 60%;
             }
+
             .posi {
               width: 1200px;
+
               button {
                 width: 130px;
                 height: 73px;
@@ -584,6 +572,7 @@ export default {
                 color: #fff;
                 font-size: 24px;
               }
+
               .el-input {
                 width: 1070px;
                 height: 73px;
@@ -591,6 +580,7 @@ export default {
               }
             }
           }
+
           .level {
             .ipt1 {
               height: 40px;
@@ -600,6 +590,7 @@ export default {
             .posi {
               position: relative;
               width: 1200px;
+
               button {
                 position: absolute;
                 right: 0;
@@ -611,23 +602,28 @@ export default {
                 color: #fff;
                 font-size: 24px;
               }
+
               .el-input {
                 width: 1070px;
                 height: 73px;
                 background: #fff;
               }
             }
+
             #level {
               display: none;
+
               &.on {
                 display: block;
               }
             }
           }
+
           .source {
             .hover:hover {
               text-decoration: underline;
             }
+
             .text {
               width: 100%;
               height: 240px;
@@ -636,10 +632,12 @@ export default {
               border-radius: 12px;
               word-wrap: break-word;
             }
+
             .text::-webkit-scrollbar-track-piece {
               background-color: rgba(0, 0, 0, 0.1);
               border-left: 1px solid rgba(0, 0, 0, 0);
             }
+
             .text::-webkit-scrollbar {
               width: 5px;
               height: 13px;
@@ -647,6 +645,7 @@ export default {
               -moz-border-radius: 5px;
               border-radius: 5px;
             }
+
             .text::-webkit-scrollbar-thumb {
               background-color: #02204e;
               background-clip: padding-box;
@@ -655,6 +654,7 @@ export default {
               border-radius: 5px;
               min-height: 28px;
             }
+
             .text::-webkit-scrollbar-thumb:hover {
               background-color: #02204e;
               -webkit-border-radius: 5px;
@@ -662,24 +662,30 @@ export default {
               border-radius: 5px;
             }
           }
+
           .trans {
             table {
               color: #fff;
               border: 1px solid #fff;
               border-collapse: collapse;
               width: 100%;
+
               tr {
                 color: #fff;
                 border: 1px solid #fff;
               }
+
               tbody {
                 color: #fff;
+
                 tr:nth-child(odd) {
                   background: #02204e;
                 }
+
                 tr:nth-child(even) {
                   background: #02204e;
                 }
+
                 tr {
                   color: #fff;
                   height: 40px;
@@ -689,9 +695,11 @@ export default {
           }
         }
       }
+
       .list {
         .item {
           border-top: 1px solid #999;
+
           .hover:hover {
             color: #666;
             text-decoration: underline;
@@ -700,48 +708,59 @@ export default {
       }
     }
   }
+
   .change {
     .second {
       .topData {
         .hover:hover {
           text-decoration: underline;
         }
-        > div {
-          > div {
+
+        >div {
+          >div {
             width: 50%;
           }
         }
+
         .contrahover1:hover {
           text-decoration: underline;
         }
+
         .contrahover2:hover {
           text-decoration: underline;
         }
       }
+
       .change {
         .title {
           border-bottom: 1px solid #ddd;
-          > p {
+
+          >p {
             padding: 20px;
             box-sizing: border-box;
             height: 60px;
             color: #999;
             text-align: center;
+
             &.active {
               border-bottom: 5px solid #36c6d3;
             }
           }
-          > p:hover {
+
+          >p:hover {
             border-bottom: 5px solid #9fe4ea;
           }
         }
+
         .contents {
-          > div {
+          >div {
             display: none;
+
             &.on {
               display: block;
             }
           }
+
           .balance {
             .ipt1 {
               height: 40px;
@@ -750,6 +769,7 @@ export default {
 
             .posi {
               position: relative;
+
               button {
                 position: absolute;
                 right: 20%;
@@ -762,23 +782,29 @@ export default {
                 font-size: 24px;
               }
             }
+
             #tokens {
               display: none;
+
               &.on {
                 display: block;
               }
             }
           }
+
           .transfer {
             .ipt1 {
               height: 40px;
               width: 60%;
             }
+
             .ipt2 {
               height: 40px;
               width: 60%;
             }
+
             .posi {
+
               // position: relative;
               button {
                 // position: absolute;
@@ -793,6 +819,7 @@ export default {
               }
             }
           }
+
           .level {
             .ipt1 {
               height: 40px;
@@ -801,6 +828,7 @@ export default {
 
             .posi {
               position: relative;
+
               button {
                 position: absolute;
                 right: 20%;
@@ -813,33 +841,41 @@ export default {
                 font-size: 24px;
               }
             }
+
             #level {
               display: none;
+
               &.on {
                 display: block;
               }
             }
           }
+
           .source {
             .hover:hover {
               text-decoration: underline;
             }
           }
+
           .trans {
             table {
               border: 1px solid #d6e5e9;
               border-collapse: collapse;
               width: 100%;
+
               tr {
                 border: 1px solid #d6e5e9;
               }
+
               tbody {
                 tr:nth-child(odd) {
                   background: #eef5f9;
                 }
+
                 tr:nth-child(even) {
                   background: #fafcfd;
                 }
+
                 tr {
                   height: 30px;
                 }
@@ -848,9 +884,11 @@ export default {
           }
         }
       }
+
       .list {
         .item {
           border-top: 1px solid #999;
+
           .hover:hover {
             color: #666;
             text-decoration: underline;
