@@ -91,10 +91,10 @@
                 </div>
                 <div class="df aic fz24">
                   <span class="mr10 b1" style="
-                          padding-top: 10px;
-                          display: inline-block;
-                          margin-right: 15px;
-                        ">
+                              padding-top: 10px;
+                              display: inline-block;
+                              margin-right: 15px;
+                            ">
                     AMOUNT
                   </span>
                   <el-input class="mt20 ipt2" v-model="input3" placeholder="please input amount">
@@ -307,7 +307,6 @@ export default {
             "transactionList",
             JSON.stringify(this.transactionList)
           );
-          console.log(this.transactionList);
         });
     },
     showTokens() {

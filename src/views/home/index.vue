@@ -217,7 +217,13 @@ const deltaT = (faultDat) => {
   // 计算分钟数侯剩余毫秒数
   var leave3 = leave2 % (3600 * 1000);
   var second = Math.floor(leave3 / (60 * 1000));
-  var time = days + " " + "days" + "," + hours + " " + "hours ago";
+  if (days == 0 && hours == 0) {
+    var time = minutes + " " + "mins" + "," + second + " " + "seconds";
+  } else if (days == 0) {
+    var time = hours + " " + "hours" + "," + minutes + " " + "mins";
+  } else {
+    var time = days + " " + "days" + "," + hours + " " + "hours";
+  }
   return time;
 };
 const goDetail = (n) => {

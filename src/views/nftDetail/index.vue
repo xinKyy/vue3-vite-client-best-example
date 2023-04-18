@@ -44,10 +44,10 @@
                 </div>
                 <div class="df aic">
                   <span class="mr10" style="
-                        padding-top: 10px;
-                        display: inline-block;
-                        margin-right: 15px;
-                      ">TokenId</span>
+                                                                      padding-top: 10px;
+                                                                      display: inline-block;
+                                                                      margin-right: 15px;
+                                                                    ">TokenId</span>
                   <el-form>
                     <el-form-item>
                       <el-select v-model="tokenId" placeholder="please select your tokenId">
@@ -241,13 +241,16 @@ const getTransfer = () => {
   const contractAbi = NFT[0].abi;
   const contractAddress = NFT[0].address;
   const myContract = new web3.eth.Contract(contractAbi, contractAddress);
-  let fromAddress = web3.eth.getAccounts();
-  myContract.methods
-    .transferFrom(fromAddress[0], input2.value, tokenId.value)
-    .send({ from: fromAddress[0] })
-    .then((r) => {
-      transactionArr.value.push(r);
-    });
+  // let fromAddress = web3.eth.getAccounts();
+  web3.eth.getAccounts().then(res => {
+    let account = res[0]
+    myContract.methods
+      .transferFrom(account, input2.value, tokenId.value)
+      .send({ from: account })
+      .then((r) => {
+        transactionArr.value.push(r);
+      });
+  })
 };
 onMounted(() => {
   const titles = document.querySelectorAll(".title>p");
@@ -270,11 +273,7 @@ onMounted(() => {
     contractData.value = res.data.result;
     abi.value = JSON.stringify(res.data.result.abi);
   });
-  // getWebrelay({ addr: addr, options: ["balance", "count", "bytecode"] }).then(
-  //   (res) => {
-  //     console.log(res);
-  //   }
-  // );
+
   const btns = document.querySelectorAll(".btns >.btn");
   const contents = document.querySelectorAll(".contents >.item");
   btns.forEach((btn, ind) => {
@@ -530,4 +529,5 @@ onMounted(() => {
       }
     }
   }
-}</style>
+}
+</style>

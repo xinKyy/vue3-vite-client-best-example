@@ -27,12 +27,14 @@
             <p>Block Height :</p>
             <h4 class="df aic">
               <span class="df aic btne jcc" @click="Prev" v-if="Num != 0">
-                <el-icon><ArrowLeft /></el-icon>
-                Prev</span
-              >
+                <el-icon>
+                  <ArrowLeft />
+                </el-icon>
+                Prev</span>
               <span style="margin: 0 20px">{{ one.number }}</span>
-              <span class="df aic btne jcc" @click="Next"
-                >Next <el-icon><ArrowRight /></el-icon>
+              <span class="df aic btne jcc" @click="Next">Next <el-icon>
+                  <ArrowRight />
+                </el-icon>
               </span>
             </h4>
           </div>
@@ -120,10 +122,7 @@
           <p style="color: #a2abb7" class="fz16 mb10">
             This is an open source Blockchain Explorer.
           </p>
-          <img
-            src="../../assets/images/powered-by-etcexplorer-w.png"
-            style="width: 157px; height: 51px"
-          />
+          <img src="../../assets/images/powered-by-etcexplorer-w.png" style="width: 157px; height: 51px" />
         </div>
         <div class="df fdc">
           <p class="mb20 fz18 fw7" style="color: #44b6ae">FOLLOW US ON</p>
@@ -145,7 +144,6 @@ import { onMounted, reactive, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useRoute } from "vue-router";
 import { ElMessage } from "element-plus";
-import { toNumber } from "lodash";
 const $router = useRouter();
 const $route = useRoute();
 const blockData = reactive({});
@@ -308,21 +306,25 @@ onMounted(() => {
   width: 300px;
   height: 30px;
 }
+
 ::v-deep .el-button {
   width: 60px;
   height: 30px;
   background: #efefef;
 }
+
 ::v-deep .el-tabs__nav-scroll {
   margin-top: 30px;
   margin-right: 20%;
   float: right;
   font-size: 24px !important;
 }
+
 ::v-deep .el-tabs__item {
   font-size: 20px;
 }
-.demo-tabs > .el-tabs__content {
+
+.demo-tabs>.el-tabs__content {
   padding: 32px;
   color: #6b778c;
   font-size: 32px;
@@ -332,36 +334,44 @@ onMounted(() => {
 .transactions {
   height: 100%;
   font-family: "pingfang";
+
   .btns {
-    > div {
+    >div {
       width: 180px;
       height: 57px;
       border-radius: 29px;
       background: #fff;
       color: #02204e;
+
       &.active {
         background: #02204e;
         color: #fff;
       }
     }
   }
+
   .contents {
     color: #02204e;
+
     .second {
       .detail {
         .item {
           border-top: 1px solid #ddd;
           padding: 15px 10px;
+
           p {
             width: 33%;
           }
+
           h4 {
             text-align: left;
             width: 67%;
           }
+
           .wrap {
             word-wrap: break-word;
           }
+
           .text {
             width: 67%;
             height: 106px;
@@ -369,6 +379,7 @@ onMounted(() => {
             border-radius: 12px;
             word-wrap: break-word;
           }
+
           .btne {
             width: 80px;
             height: 40px;
@@ -376,13 +387,16 @@ onMounted(() => {
             color: #fff;
             font-family: "ding";
           }
+
           .btne:hover {
             background: #3a80d7;
           }
+
           .hovers:hover {
             text-decoration: underline;
           }
         }
+
         .item:hover {
           background: #eef1f5;
         }
@@ -390,18 +404,20 @@ onMounted(() => {
     }
   }
 }
+
 .footer {
   height: 240px;
   width: 100%;
   background: #1c2437;
+
   .shallow {
     height: 160px;
     padding: 40px 0 30px 0;
   }
+
   .deep {
     background: #384053;
     width: 100%;
     height: 80px;
   }
-}
-</style>
+}</style>
