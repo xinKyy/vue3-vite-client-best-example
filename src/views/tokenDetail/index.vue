@@ -204,6 +204,7 @@
 
 <script>
 import Token from "@/common/token.json";
+import JRealtion from "@/common/JRealtion.json";
 import footerBar from "../../components/footer/index.vue";
 import searchFor from "../../components/search/index.vue";
 import Web3 from "web3";
@@ -323,8 +324,8 @@ export default {
     },
     async getLevel() {
       let web3 = window.ethereum && new Web3(window.ethereum);
-      const contractAbi = Token[0].abi;
-      const contractAddress = Token[0].address;
+      const contractAbi = JRealtion[0].abi;
+      const contractAddress = JRealtion[0].address;
       const myContract = new web3.eth.Contract(contractAbi, contractAddress);
       await myContract.methods
         .getUpperLevel(this.input4)
