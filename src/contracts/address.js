@@ -42,7 +42,7 @@ export const RETRIVE_ADDR = {
 }
 
 const Web3 = reactive(require("web3"));
-const rpcURL = ref("http://3.20.206.120:9650/ext/bc/C/rpc"); // Your RPC URL goes here
+const rpcURL = ref("http://chain.mskchain.cc/ext/bc/C/rpc"); // Your RPC URL goes here
 const abi = reactive([
   {
     inputs: [],

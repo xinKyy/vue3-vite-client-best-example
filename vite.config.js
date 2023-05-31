@@ -18,12 +18,12 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/req': {
-        target: 'http://154.92.110.252:9000',
+        target: 'http://43.154.112.216:9000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/req/, '')
       },
       '/red': {
-        target: 'http://154.92.110.252:5000',
+        target: 'http://43.154.112.216:5000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/red/, '')
       }
