@@ -1,7 +1,7 @@
 import axios from 'axios'
 const instance = axios.create({
   timeout: 10000,
-  baseURL: '/red'
+  baseURL: 'http://43.154.112.216:5000'
 })
 // 请求拦截器
 instance.interceptors.request.use(

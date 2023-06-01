@@ -37,7 +37,7 @@ export const getContract = (data) => {
 }
 export const getWebrelay = (data) => {
   return response({
-    url: '/web3relay',
+    url: '/api/web3relay',
     method: 'POST',
     data
   })
