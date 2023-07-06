@@ -50,7 +50,7 @@
             </div>
             <div class="list df fdc p10 bsbb">
               <div class="one df aic jcsb ffdin" v-for="(v, i) in blockArr.value" :key="i">
-                <p class="fz48 fw5 mr20" style="width: 10%">{{ v.number }}</p>
+                <p class="fz48 fw5 mr20" style="width: 10%;margin-right: 40px;">{{ v.number }}</p>
                 <div class="ri df aic jcsa">
                   <p>{{ deltaT(v.timestamp * 1000) }}</p>
                   <div class="df fdc">
@@ -134,7 +134,7 @@
       </div>
       <div class="deep mt40 df aic">
         <div class="container" style="color: #a2abb7">
-          2019 © Ethereum Classic.
+          MAYA
         </div>
       </div>
     </div>
@@ -235,6 +235,7 @@ const goDetail = (n) => {
   });
 };
 const send = () => {
+  if(window.ethereum){
   let web3 = window.ethereum && new Web3(window.ethereum);
   const contractAbi = JSON.parse(
     '[{"inputs": [],"name": "retrieve","outputs": [{"internalType": "uint256","name": "","type": "uint256"}],"stateMutability": "view","type": "function"},{"inputs": [{"internalType": "uint256","name": "num","type": "uint256"}],"name": "store","outputs": [],"stateMutability": "nonpayable","type":"function"}]'
@@ -249,8 +250,9 @@ const send = () => {
       alert("请安装MetaMask钱包");
     }
   });
+}
 };
-send();
+// send();
 // 查询代币余额
 // const getToken = () => {
 //   let web3 = window.ethereum && new Web3(window.ethereum);
@@ -270,13 +272,16 @@ const toThousands = (num = 0) => {
 };
 onMounted(() => {
   const str = '0x3f39b2d2bee948896d016c66f31bc20c12dfd105ccf6e707ce13aa224e400dcc'
-  console.log(str.length, 111)
-  getWebrelay({ action: "hashrate" }).then((res) => {
-    topData.value = res.data;
-    topData.blockHeight = res.data.blockHeight;
-    topData.blockTime = res.data.blockTime.toFixed(2);
-    topData.difficulty = res.data.difficulty;
-    topData.hashrate = res.data.hashrate.toFixed(2);
+  // console.log(str.length, 111)
+  getWebrelay().then((res) => {
+    // console.log(res.data);
+    if (res.status == 200) {
+      topData.value = res.data;
+      topData.blockHeight = res.data.result.number;
+      topData.blockTime = res.data.result.blockTime;
+      topData.difficulty = res.data.result.difficulty;
+      topData.hashrate = res.data.result.hashrate;      
+    }
   });
 
   const btns = document.querySelectorAll(".btns >.btn");
@@ -292,6 +297,10 @@ onMounted(() => {
     });
   });
 });
+
+// function aaaa(params) {
+  
+// }
 </script>
 
 <style lang="scss" scoped>

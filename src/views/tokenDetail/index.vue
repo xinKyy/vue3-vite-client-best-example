@@ -280,35 +280,39 @@ export default {
       });
     },
     async getBalance() {
-      let web3 = window.ethereum && new Web3(window.ethereum);
-      const contractAbi = Token[0].abi;
-      const contractAddress = Token[0].address; //查询用户地址
-      const myContract = new web3.eth.Contract(contractAbi, contractAddress); //所有代币的abi可以通用（abi,合约地址）
-      await myContract.methods
-        .balanceOf(this.input1)
-        .call()
-        .then((res) => {
-          this.tokens = res;
-          this.showTokens();
-        });
+      if (window.ethereum) {
+        let web3 = window.ethereum && new Web3(window.ethereum);
+        const contractAbi = Token[0].abi;
+        const contractAddress = Token[0].address; //查询用户地址
+        const myContract = new web3.eth.Contract(contractAbi, contractAddress); //所有代币的abi可以通用（abi,合约地址）
+        await myContract.methods
+          .balanceOf(this.input1)
+          .call()
+          .then((res) => {
+            this.tokens = res;
+            this.showTokens();
+          });
+      }
     },
     //ETH转账
     async getTransfer() {
-      let web3 = window.ethereum && new Web3(window.ethereum);
-      const contractAbi = Token[0].abi;
-      const contractAddress = Token[0].address; //查询用户地址
-      const myContract = new web3.eth.Contract(contractAbi, contractAddress); //所有代币的abi可以通用（abi,合约地址）
-      let fromAddress = await web3.eth.getAccounts();
-      myContract.methods
-        .transfer(this.input2, this.input3)
-        .send({ from: fromAddress[0] })
-        .then((r) => {
-          this.transactionList.push(r);
-          localStorage.setItem(
-            "transactionList",
-            JSON.stringify(this.transactionList)
-          );
-        });
+      if (window.ethereum) {
+        let web3 = window.ethereum && new Web3(window.ethereum);
+        const contractAbi = Token[0].abi;
+        const contractAddress = Token[0].address; //查询用户地址
+        const myContract = new web3.eth.Contract(contractAbi, contractAddress); //所有代币的abi可以通用（abi,合约地址）
+        let fromAddress = await web3.eth.getAccounts();
+        myContract.methods
+          .transfer(this.input2, this.input3)
+          .send({ from: fromAddress[0] })
+          .then((r) => {
+            this.transactionList.push(r);
+            localStorage.setItem(
+              "transactionList",
+              JSON.stringify(this.transactionList)
+            );
+          });
+      }
     },
     showTokens() {
       const tokens = document.querySelector("#tokens");
@@ -323,17 +327,19 @@ export default {
       }
     },
     async getLevel() {
-      let web3 = window.ethereum && new Web3(window.ethereum);
-      const contractAbi = JRealtion[0].abi;
-      const contractAddress = JRealtion[0].address;
-      const myContract = new web3.eth.Contract(contractAbi, contractAddress);
-      await myContract.methods
-        .getUpperLevel(this.input4)
-        .call()
-        .then((res) => {
-          this.level = res;
-          this.showLevel();
-        });
+      if (window.ethereum) {
+        let web3 = window.ethereum && new Web3(window.ethereum);
+        const contractAbi = JRealtion[0].abi;
+        const contractAddress = JRealtion[0].address;
+        const myContract = new web3.eth.Contract(contractAbi, contractAddress);
+        await myContract.methods
+          .getUpperLevel(this.input4)
+          .call()
+          .then((res) => {
+            this.level = res;
+            this.showLevel();
+          });
+      }
     },
     // 向后补零
     getZeroB(n) {

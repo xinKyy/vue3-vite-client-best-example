@@ -197,60 +197,66 @@ const showTokens = () => {
   }
 };
 const getBalance = async () => {
-  let web3 = window.ethereum && new Web3(window.ethereum);
-  const contractAbi = NFT[0].abi;
-  const contractAddress = NFT[0].address;
-  const myContract = new web3.eth.Contract(contractAbi, contractAddress);
-  await myContract.methods
-    .balanceOf(input1.value)
-    .call()
-    .then((res) => {
-      tokens.value = res;
-      console.log(tokens.value);
-      showTokens();
-    });
+  if (window.ethereum) {
+    let web3 = window.ethereum && new Web3(window.ethereum);
+    const contractAbi = NFT[0].abi;
+    const contractAddress = NFT[0].address;
+    const myContract = new web3.eth.Contract(contractAbi, contractAddress);
+    await myContract.methods
+      .balanceOf(input1.value)
+      .call()
+      .then((res) => {
+        tokens.value = res;
+        console.log(tokens.value);
+        showTokens();
+      });
+  }
 };
 
 const getTokenId = () => {
-  let web3 = window.ethereum && new Web3(window.ethereum);
-  const contractAbi = NFT[0].abi;
-  const contractAddress = NFT[0].address;
-  const myContract = new web3.eth.Contract(contractAbi, contractAddress);
-  web3.eth.getAccounts().then((res) => {
-    let account = res[0];
-    myContract.methods
-      .balanceOf(account)
-      .call()
-      .then((res) => {
-        token.value = res;
-        for (var i = 0; i < token.value; i++) {
-          myContract.methods
-            .tokenOfOwnerByIndex(account, i)
-            .call()
-            .then((res) => {
-              tokenidArr.push(res);
-            });
-        }
-      });
-  });
+  if (window.ethereum) {
+    let web3 = window.ethereum && new Web3(window.ethereum);
+    const contractAbi = NFT[0].abi;
+    const contractAddress = NFT[0].address;
+    const myContract = new web3.eth.Contract(contractAbi, contractAddress);
+    web3.eth.getAccounts().then((res) => {
+      let account = res[0];
+      myContract.methods
+        .balanceOf(account)
+        .call()
+        .then((res) => {
+          token.value = res;
+          for (var i = 0; i < token.value; i++) {
+            myContract.methods
+              .tokenOfOwnerByIndex(account, i)
+              .call()
+              .then((res) => {
+                tokenidArr.push(res);
+              });
+          }
+        });
+    });
+  }
 };
 getTokenId();
 // ETH转账;
 const getTransfer = () => {
-  let web3 = window.ethereum && new Web3(window.ethereum);
-  const contractAbi = NFT[0].abi;
-  const contractAddress = NFT[0].address;
-  const myContract = new web3.eth.Contract(contractAbi, contractAddress);
-  // let fromAddress = web3.eth.getAccounts();
-  web3.eth.getAccounts().then(res => {
-    let account = res[0]
-    myContract.methods
-      .transferFrom(account, input2.value, tokenId.value)
-      .send({ from: account })
-      .then((r) => {
-        transactionArr.value.push(r);
-      });
-  })
+  if (window.ethereum) {
+    let web3 = window.ethereum && new Web3(window.ethereum);
+    const contractAbi = NFT[0].abi;
+    const contractAddress = NFT[0].address;
+    const myContract = new web3.eth.Contract(contractAbi, contractAddress);
+    // let fromAddress = web3.eth.getAccounts();
+    web3.eth.getAccounts().then(res => {
+      let account = res[0]
+      myContract.methods
+        .transferFrom(account, input2.value, tokenId.value)
+        .send({ from: account })
+        .then((r) => {
+          transactionArr.value.push(r);
+        });
+    })
+  }
 };
 onMounted(() => {
   const titles = document.querySelectorAll(".title>p");

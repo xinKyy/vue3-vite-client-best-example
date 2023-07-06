@@ -25,7 +25,7 @@
         <div class="content bsbb mt40 df fdc">
           <div class="list df fdc">
             <div class="item bsbb df aic fz24 fw7">
-              <span style="margin-right: 100px">A1(B1)</span>
+              <span style="margin-right: 100px">MAYA-NFT</span>
               <span class="hover" style="color: #02204e" @click="goNftDetail">{{
                 nft
               }}</span>

@@ -113,7 +113,7 @@
       </div>
       <div class="deep mt40 df aic">
         <div class="container" style="color: #a2abb7">
-          2019 © Ethereum Classic.
+          MSK
         </div>
       </div>
     </div>

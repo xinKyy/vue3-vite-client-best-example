@@ -24,7 +24,7 @@
         <div class="content bsbb mt40 df fdc">
           <div class="list df fdc">
             <div class="item bsbb df aic fz24 fw7">
-              <span style="margin-right: 100px; color: #02204e">AA(BB)</span>
+              <span style="margin-right: 100px; color: #02204e">ETH</span>
               <span
                 class="hover"
                 style="color: #02204e"

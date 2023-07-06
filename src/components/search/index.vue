@@ -1,7 +1,8 @@
 <template>
   <div class="search df aic jcsb bsbb container">
     <div class="logo df aic jcc">
-      <img src="../../assets/images/lo.jpg" />
+      <img src="../../assets/images/explorer-logo.png" style="width: 35px;height: 35px;" /><span
+        style="font-size: 16px;color: #2065F8;font-weight: bold;margin-left: 10px;">MAYA explorer</span>
     </div>
     <div class="for">
       <el-input v-model="input" class="w-50 m-2" size="large" placeholder="Search by Address/Txhash/BlockNum/BlockHash" />

@@ -23,7 +23,7 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/req/, '')
       },
       '/red': {
-        target: 'http://43.154.112.216:5000',
+        target: 'http://43.154.112.216:3000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/red/, '')
       }
